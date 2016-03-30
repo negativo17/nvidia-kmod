@@ -15,17 +15,16 @@
 %endif
 
 Name:           %{kmod_name}-kmod
-Version:        352.79
+Version:        361.42
 Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          2
 License:        NVIDIA License
 URL:            http://www.nvidia.com/
-ExclusiveArch:  %{ix86} x86_64 armv7hl
+ExclusiveArch:  %{ix86} x86_64
 
 Source0:        %{kmod_name}-kmod-%{version}-i386.tar.xz
 Source1:        %{kmod_name}-kmod-%{version}-x86_64.tar.xz
-Source2:        %{kmod_name}-kmod-%{version}-armv7hl.tar.xz
 Source10:       kmodtool-%{kmod_name}-el6.sh
 
 BuildRequires:  redhat-rpm-config
@@ -60,10 +59,6 @@ the same variant of the Linux kernel and not on any one specific build.
 %setup -q -T -b 1 -n %{kmod_name}-kmod-%{version}-x86_64
 %endif
 
-%ifarch armv7hl
-%setup -q -T -b 2 -n %{kmod_name}-kmod-%{version}-armv7hl
-%endif
-
 mv kernel/* .
 
 echo "override %{kmod_name} * weak-updates/%{kmod_name}" > kmod-%{kmod_name}.conf
@@ -74,19 +69,12 @@ export IGNORE_XEN_PRESENCE=1
 export IGNORE_PREEMPT_RT_PRESENCE=1
 
 make %{?_smp_mflags} module
-%ifnarch %{ix86}
-cd uvm
-make %{?_smp_mflags} module
-%endif
 
 %install
 export INSTALL_MOD_PATH=%{buildroot}
 export INSTALL_MOD_DIR=extra/%{kmod_name}
 ksrc=%{_usrsrc}/kernels/%{kversion}
 make -C "${ksrc}" modules_install M=$PWD
-%ifnarch %{ix86}
-make -C "${ksrc}" modules_install M=$PWD/uvm
-%endif
 
 install -d %{buildroot}%{_sysconfdir}/depmod.d/
 install kmod-%{kmod_name}.conf %{buildroot}%{_sysconfdir}/depmod.d/
@@ -94,6 +82,10 @@ install kmod-%{kmod_name}.conf %{buildroot}%{_sysconfdir}/depmod.d/
 rm -f %{buildroot}/lib/modules/%{kversion}/modules.*
 
 %changelog
+* Wed Mar 30 2016 Simone Caronni <negativo17@gmail.com> - 2:361.42-1
+- Update to 361.42, use new kernel module build mechanism.
+- Remove ARM (Carma, Kayla) support.
+
 * Tue Jan 26 2016 Simone Caronni <negativo17@gmail.com> - 2:352.79-1
 - Update to 352.79.
 
