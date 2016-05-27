@@ -15,7 +15,7 @@
 %endif
 
 Name:           %{kmod_name}-kmod
-Version:        361.42
+Version:        361.45.11
 Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          2
@@ -82,6 +82,9 @@ install kmod-%{kmod_name}.conf %{buildroot}%{_sysconfdir}/depmod.d/
 rm -f %{buildroot}/lib/modules/%{kversion}/modules.*
 
 %changelog
+* Fri May 27 2016 Simone Caronni <negativo17@gmail.com> - 2:361.45.11-1
+- Update to 361.45.11.
+
 * Wed Mar 30 2016 Simone Caronni <negativo17@gmail.com> - 2:361.42-1
 - Update to 361.42, use new kernel module build mechanism.
 - Remove ARM (Carma, Kayla) support.
