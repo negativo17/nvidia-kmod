@@ -7,6 +7,18 @@
 
 %global	debug_package %{nil}
 
+%global zipmodules 1
+
+%define __spec_install_post \
+  %{__arch_install_post}\
+  %{__os_install_post}\
+  %{__mod_compress_install_post}
+
+%define __mod_compress_install_post \
+  if [ "%{zipmodules}" -eq "1" ]; then \
+    find $RPM_BUILD_ROOT/usr/lib/modules/ -type f -name '*.ko' | xargs xz; \
+  fi
+
 Name:           nvidia-kmod
 Version:        364.19
 Release:        1%{?dist}
