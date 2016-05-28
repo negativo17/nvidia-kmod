@@ -5,11 +5,23 @@
 # a new akmod package will only get build when a new one is actually needed
 %define buildforkernels akmod
 
-%global	debug_package %{nil}
+%global debug_package %{nil}
+
+%global zipmodules 1
+
+%define __spec_install_post \
+  %{__arch_install_post}\
+  %{__os_install_post}\
+  %{__mod_compress_install_post}
+
+%define __mod_compress_install_post \
+  if [ "%{zipmodules}" -eq "1" ]; then \
+    find %{buildroot}/usr/lib/modules/ -type f -name '*.ko' | xargs xz; \
+  fi
 
 Name:           nvidia-kmod
 Version:        367.18
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          2
 License:        NVIDIA License
@@ -70,6 +82,10 @@ done
 %{?akmod_install}
 
 %changelog
+* Sat May 28 2016 Simone Caronni <negativo17@gmail.com> - 2:367.18-2
+- Make sure installed modules are compressed with xz (default since May 2014 in
+  Fedora...). Thanks leigh123linux.
+
 * Thu May 26 2016 Simone Caronni <negativo17@gmail.com> - 2:367.18-1
 - Update to 367.18.
 
