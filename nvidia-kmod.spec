@@ -16,7 +16,7 @@
 
 %define __mod_compress_install_post \
   if [ "%{zipmodules}" -eq "1" ]; then \
-    find %{buildroot}/usr/lib/modules/ -type f -name '*.ko' | xargs xz; \
+    find %{buildroot}/usr/lib/modules/ -type f -name '*.ko' | xargs xz &> /dev/null || : \
   fi
 
 Name:           nvidia-kmod
