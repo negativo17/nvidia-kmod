@@ -15,13 +15,13 @@
   %{__mod_compress_install_post}
 
 %define __mod_compress_install_post \
-  if [ "%{zipmodules}" -eq "1" ]; then \
+  if [ "%{zipmodules}" -eq "1" ] && [ "%{buildforkernels}" != "akmod" ]; then \
     find %{buildroot}/usr/lib/modules/ -type f -name '*.ko' | xargs xz; \
   fi
 
 Name:           nvidia-kmod
 Version:        364.19
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          2
 License:        NVIDIA License
@@ -82,6 +82,10 @@ done
 %{?akmod_install}
 
 %changelog
+* Thu Jun 09 2016 Simone Caronni <negativo17@gmail.com> - 2:364.19-3
+- Make sure the compress command is not run when building only the akmod. Thanks
+  leigh123linux.
+
 * Sat May 28 2016 Simone Caronni <negativo17@gmail.com> - 2:364.19-2
 - Make sure installed modules are compressed with xz (default since May 2014 in
   Fedora...). Thanks leigh123linux.
