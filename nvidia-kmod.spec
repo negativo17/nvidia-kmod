@@ -20,8 +20,8 @@
   fi
 
 Name:           nvidia-kmod
-Version:        364.19
-Release:        3%{?dist}
+Version:        367.27
+Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          2
 License:        NVIDIA License
@@ -82,6 +82,9 @@ done
 %{?akmod_install}
 
 %changelog
+* Mon Jun 13 2016 Simone Caronni <negativo17@gmail.com> - 2:367.27-1
+- Update to 367.27.
+
 * Thu Jun 09 2016 Simone Caronni <negativo17@gmail.com> - 2:364.19-3
 - Make sure the compress command is not run when building only the akmod. Thanks
   leigh123linux.
