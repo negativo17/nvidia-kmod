@@ -133,8 +133,7 @@ get_rpmtemplate ()
 Provides:         kabi-modules = ${verrel}${dotvariant}
 Provides:         ${kmod_name}-kmod = %{?epoch:%{epoch}:}%{version}-%{release}
 Requires:         ${kmod_name}-driver = %{?epoch:%{epoch}:}%{version}
-Requires(post):   /sbin/depmod
-Requires(postun): /sbin/depmod
+Requires:         module-init-tools
 EOF
 
     if [ "no" != "$nobuildreqs" ]

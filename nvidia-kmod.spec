@@ -16,7 +16,7 @@
 
 Name:           %{kmod_name}-kmod
 Version:        367.57
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          2
 License:        NVIDIA License
@@ -82,6 +82,9 @@ install kmod-%{kmod_name}.conf %{buildroot}%{_sysconfdir}/depmod.d/
 rm -f %{buildroot}/lib/modules/%{kversion}/modules.*
 
 %changelog
+* Fri Nov 04 2016 Simone Caronni <negativo17@gmail.com> - 2:367.57-2
+- Require module-init-tools (provided by kmod) instead of /sbin/depmod.
+
 * Mon Oct 10 2016 Simone Caronni <negativo17@gmail.com> - 2:367.57-1
 - Update to 367.57.
 
