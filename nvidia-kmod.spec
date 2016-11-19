@@ -20,7 +20,7 @@
   fi
 
 Name:           nvidia-kmod
-Version:        370.20
+Version:        375.20
 Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          2
@@ -82,7 +82,7 @@ done
 %{?akmod_install}
 
 %changelog
-* Sat Nov 19 2016 Simone Caronni <negativo17@gmail.com> - 2:370.20-1
+* Sat Nov 19 2016 Simone Caronni <negativo17@gmail.com> - 2:375.20-1
 - Update to 375.20.
 
 * Fri Sep 09 2016 Simone Caronni <negativo17@gmail.com> - 2:370.28-1
