@@ -9,9 +9,9 @@
 %{!?kversion: %global kversion 2.6.32-642.el6.%{_target_cpu}}
 %endif
 
-# RHEL 7.2
+# RHEL 7.3
 %if 0%{?rhel} == 7
-%{!?kversion: %global kversion 3.10.0-327.el7.%{_target_cpu}}
+%{!?kversion: %global kversion 3.10.0-514.el7.%{_target_cpu}}
 %endif
 
 Name:           %{kmod_name}-kmod
