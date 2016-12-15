@@ -15,8 +15,8 @@
 %endif
 
 Name:           %{kmod_name}-kmod
-Version:        375.20
-Release:        2%{?dist}
+Version:        375.26
+Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          2
 License:        NVIDIA License
@@ -82,6 +82,9 @@ install kmod-%{kmod_name}.conf %{buildroot}%{_sysconfdir}/depmod.d/
 rm -f %{buildroot}/lib/modules/%{kversion}/modules.*
 
 %changelog
+* Thu Dec 15 2016 Simone Caronni <negativo17@gmail.com> - 2:375.26-1
+- Update to 375.26
+
 * Mon Dec 12 2016 Simone Caronni <negativo17@gmail.com> - 2:375.20-2
 - Rebuild for RHEL 7.3 kernel.
 
