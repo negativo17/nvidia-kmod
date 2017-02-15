@@ -54,13 +54,17 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 
 %ifarch %{ix86}
 %setup -q -n %{name}-%{version}-i386
+%if 0%{?fedora} >= 26
 %patch0 -p1
-%patch1 -p1
+%endif
 %endif
 
 %ifarch x86_64
 %setup -q -b 1 -n %{name}-%{version}-x86_64
+%if 0%{?fedora} >= 26
+%patch0 -p1
 %patch1 -p1
+%endif
 %endif
 
 for kernel_version in %{?kernel_versions}; do
