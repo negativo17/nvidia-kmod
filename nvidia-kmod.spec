@@ -32,7 +32,8 @@ Source0:        %{name}-%{version}-i386.tar.xz
 Source1:        %{name}-%{version}-x86_64.tar.xz
 Source11:       nvidia-kmodtool-excludekernel-filterfile
 
-Patch1:         kernel-4.10-rc8.patch
+Patch0:         kernel-4.10-rc8.patch
+Patch1:         kernel-4.10-rc8-uvm.patch
 
 Conflicts:      nvidia-multi-kmod
 
@@ -53,13 +54,14 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 
 %ifarch %{ix86}
 %setup -q -n %{name}-%{version}-i386
+%patch0 -p1
+%patch1 -p1
 %endif
 
 %ifarch x86_64
 %setup -q -b 1 -n %{name}-%{version}-x86_64
-%endif
-
 %patch1 -p1
+%endif
 
 for kernel_version in %{?kernel_versions}; do
     mkdir _kmod_build_${kernel_version%%___*}
