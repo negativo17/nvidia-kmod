@@ -1,21 +1,34 @@
-diff -ur NVIDIA-Linux-x86_64-378.13/kernel/nvidia-uvm/uvm8_test.c NVIDIA-Linux-x86_64-378.13.patched/kernel/nvidia-uvm/uvm8_test.c
---- NVIDIA-Linux-x86_64-378.13/kernel/nvidia-uvm/uvm8_test.c	2017-02-08 04:58:36.000000000 +0100
-+++ NVIDIA-Linux-x86_64-378.13.patched/kernel/nvidia-uvm/uvm8_test.c	2017-02-15 04:14:46.305110124 +0100
-@@ -103,7 +103,7 @@
+--- nvidia-kmod-378.13-x86_64/kernel/nvidia-uvm/uvm8_test.c.orig	2017-02-20 22:11:44.745880835 +0000
++++ nvidia-kmod-378.13-x86_64/kernel/nvidia-uvm/uvm8_test.c	2017-02-20 22:16:37.110330075 +0000
+@@ -21,6 +21,7 @@
+ 
+ *******************************************************************************/
+ 
++#include <linux/version.h>
+ #include "uvm8_api.h"
+ #include "uvm8_test.h"
+ #include "uvm8_test_ioctl.h"
+@@ -103,7 +104,11 @@
      return NV_ERR_INVALID_STATE;
  }
  
--static NV_STATUS uvm8_test_get_kernel_virtual_address(
++#if LINUX_VERSION_CODE < KERNEL_VERSION(4,10,0)
+ static NV_STATUS uvm8_test_get_kernel_virtual_address(
++#else
 +static NV_STATUS uvm8_test_get_kernel_address(
++#endif
          UVM_TEST_GET_KERNEL_VIRTUAL_ADDRESS_PARAMS *params,
          struct file *filp)
  {
-@@ -173,7 +173,7 @@
+@@ -173,7 +178,11 @@
          UVM_ROUTE_CMD_STACK(UVM_TEST_RANGE_GROUP_RANGE_COUNT,       uvm8_test_range_group_range_count);
          UVM_ROUTE_CMD_STACK(UVM_TEST_GET_PREFETCH_FAULTS_REENABLE_LAPSE, uvm8_test_get_prefetch_faults_reenable_lapse);
          UVM_ROUTE_CMD_STACK(UVM_TEST_SET_PREFETCH_FAULTS_REENABLE_LAPSE, uvm8_test_set_prefetch_faults_reenable_lapse);
--        UVM_ROUTE_CMD_STACK(UVM_TEST_GET_KERNEL_VIRTUAL_ADDRESS,    uvm8_test_get_kernel_virtual_address);
++#if LINUX_VERSION_CODE < KERNEL_VERSION(4,10,0)
+         UVM_ROUTE_CMD_STACK(UVM_TEST_GET_KERNEL_VIRTUAL_ADDRESS,    uvm8_test_get_kernel_virtual_address);
++#else
 +        UVM_ROUTE_CMD_STACK(UVM_TEST_GET_KERNEL_VIRTUAL_ADDRESS,    uvm8_test_get_kernel_address);
++#endif
          UVM_ROUTE_CMD_STACK(UVM_TEST_PMA_ALLOC_FREE,                uvm8_test_pma_alloc_free);
          UVM_ROUTE_CMD_STACK(UVM_TEST_PMM_ALLOC_FREE_ROOT,           uvm8_test_pmm_alloc_free_root);
          UVM_ROUTE_CMD_STACK(UVM_TEST_PMM_INJECT_PMA_EVICT_ERROR,    uvm8_test_pmm_inject_pma_evict_error);
