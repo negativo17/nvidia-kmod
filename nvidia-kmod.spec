@@ -21,7 +21,7 @@
 
 Name:           nvidia-kmod
 Version:        378.13
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          2
 License:        NVIDIA License
@@ -32,8 +32,7 @@ Source0:        %{name}-%{version}-i386.tar.xz
 Source1:        %{name}-%{version}-x86_64.tar.xz
 Source11:       nvidia-kmodtool-excludekernel-filterfile
 
-Patch0:         kernel-4.10-rc8.patch
-Patch1:         kernel-4.10-rc8-uvm.patch
+Patch0:         kernel-4.10.patch
 
 Conflicts:      nvidia-multi-kmod
 
@@ -54,17 +53,12 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 
 %ifarch %{ix86}
 %setup -q -n %{name}-%{version}-i386
-%if 0%{?fedora} >= 26
 %patch0 -p1
-%endif
 %endif
 
 %ifarch x86_64
 %setup -q -b 1 -n %{name}-%{version}-x86_64
-%if 0%{?fedora} >= 26
 %patch0 -p1
-%patch1 -p1
-%endif
 %endif
 
 for kernel_version in %{?kernel_versions}; do
@@ -92,6 +86,9 @@ done
 %{?akmod_install}
 
 %changelog
+* Thu Feb 23 2017 Simone Caronni <negativo17@gmail.com> - 2:378.13-2
+- Update 4.10 patch.
+
 * Wed Feb 15 2017 Simone Caronni <negativo17@gmail.com> - 2:378.13-1
 - Update to 378.13.
 
