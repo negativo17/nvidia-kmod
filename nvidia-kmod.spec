@@ -32,7 +32,7 @@ Source0:        %{name}-%{version}-i386.tar.xz
 Source1:        %{name}-%{version}-x86_64.tar.xz
 Source11:       nvidia-kmodtool-excludekernel-filterfile
 
-Patch0:         kernel-4.10.patch
+Patch0:         kernel_4.10.patch
 
 Conflicts:      nvidia-multi-kmod
 
