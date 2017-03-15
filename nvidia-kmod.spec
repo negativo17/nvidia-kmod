@@ -9,14 +9,14 @@
 %{!?kversion: %global kversion 2.6.32-642.el6.%{_target_cpu}}
 %endif
 
-# RHEL 7.3
+# RHEL 7.3 with an update
 %if 0%{?rhel} == 7
-%{!?kversion: %global kversion 3.10.0-514.el7.%{_target_cpu}}
+%{!?kversion: %global kversion 3.10.0-514.10.2.el7.%{_target_cpu}}
 %endif
 
 Name:           %{kmod_name}-kmod
 Version:        375.39
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          2
 License:        NVIDIA License
@@ -86,6 +86,9 @@ install kmod-%{kmod_name}.conf %{buildroot}%{_sysconfdir}/depmod.d/
 rm -f %{buildroot}/lib/modules/%{kversion}/modules.*
 
 %changelog
+* Wed Mar 15 2017 Simone Caronni <negativo17@gmail.com> - 2:375.39-3
+- Update kernel requirement for RHEL 7.
+
 * Wed Mar 01 2017 Simone Caronni <negativo17@gmail.com> - 2:375.39-2
 - Add kernel 4.10 patch.
 
