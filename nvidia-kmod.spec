@@ -4,9 +4,9 @@
 # If kversion isn't defined on the rpmbuild line, define it here. For Fedora,
 # kversion needs always to be defined as there is no kABI support.
 
-# RHEL 6.8
+# RHEL 6.9
 %if 0%{?rhel} == 6
-%{!?kversion: %global kversion 2.6.32-642.el6.%{_target_cpu}}
+%{!?kversion: %global kversion 2.6.32-696.el6.%{_target_cpu}}
 %endif
 
 # RHEL 7.3 with an update
@@ -16,7 +16,7 @@
 
 Name:           %{kmod_name}-kmod
 Version:        375.39
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          2
 License:        NVIDIA License
@@ -86,6 +86,9 @@ install kmod-%{kmod_name}.conf %{buildroot}%{_sysconfdir}/depmod.d/
 rm -f %{buildroot}/lib/modules/%{kversion}/modules.*
 
 %changelog
+* Fri Apr 07 2017 Simone Caronni <negativo17@gmail.com> - 2:375.39-4
+- Update RHEL 6.9 kernel version.
+
 * Wed Mar 15 2017 Simone Caronni <negativo17@gmail.com> - 2:375.39-3
 - Update kernel requirement for RHEL 7.
 
