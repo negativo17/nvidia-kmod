@@ -27,8 +27,6 @@ Source0:        %{kmod_name}-kmod-%{version}-i386.tar.xz
 Source1:        %{kmod_name}-kmod-%{version}-x86_64.tar.xz
 Source10:       kmodtool-%{kmod_name}-el6.sh
 
-Patch0:         kernel_4.10.patch
-
 BuildRequires:  redhat-rpm-config
 BuildRequires:  kernel-abi-whitelists
 
@@ -60,8 +58,6 @@ the same variant of the Linux kernel and not on any one specific build.
 %ifarch x86_64
 %setup -q -T -b 1 -n %{kmod_name}-kmod-%{version}-x86_64
 %endif
-
-%patch0 -p1
 
 mv kernel/* .
 
