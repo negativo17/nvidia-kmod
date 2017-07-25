@@ -20,8 +20,8 @@
   fi
 
 Name:           nvidia-kmod
-Version:        381.22
-Release:        2%{?dist}
+Version:        384.59
+Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          2
 License:        NVIDIA License
@@ -31,8 +31,6 @@ ExclusiveArch:  i686 x86_64
 Source0:        %{name}-%{version}-i386.tar.xz
 Source1:        %{name}-%{version}-x86_64.tar.xz
 Source11:       nvidia-kmodtool-excludekernel-filterfile
-
-Patch0:         kernel_4.11.patch
 
 Conflicts:      nvidia-multi-kmod
 
@@ -59,8 +57,6 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 %setup -q -b 1 -n %{name}-%{version}-x86_64
 %endif
 
-%patch0 -p1
-
 for kernel_version in %{?kernel_versions}; do
     mkdir _kmod_build_${kernel_version%%___*}
     cp -fr kernel/* _kmod_build_${kernel_version%%___*}
@@ -86,6 +82,9 @@ done
 %{?akmod_install}
 
 %changelog
+* Tue Jul 25 2017 Simone Caronni <negativo17@gmail.com> - 2:384.59-1
+- Update to 384.59.
+
 * Thu May 11 2017 Simone Caronni <negativo17@gmail.com> - 2:381.22-2
 - Add kernel 4.11 patch.
 
