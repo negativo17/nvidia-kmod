@@ -32,11 +32,9 @@ Source0:        %{name}-%{version}-i386.tar.xz
 Source1:        %{name}-%{version}-x86_64.tar.xz
 Source11:       nvidia-kmodtool-excludekernel-filterfile
 
-Conflicts:      nvidia-multi-kmod
-
 # get the needed BuildRequires (in parts depending on what we build for)
-BuildRequires:  %{_bindir}/kmodtool
-%{!?kernels:BuildRequires: buildsys-build-rpmfusion-kerneldevpkgs-%{?buildforkernels:%{buildforkernels}}%{!?buildforkernels:current}-%{_target_cpu} }
+BuildRequires:  kmodtool
+
 # kmodtool does its magic here
 %{expand:%(kmodtool --target %{_target_cpu} --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} --obsolete-name nvidia-newest --obsolete-version "%{version}" %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null) }
 
@@ -84,6 +82,7 @@ done
 %changelog
 * Tue Jul 25 2017 Simone Caronni <negativo17@gmail.com> - 2:384.59-1
 - Update to 384.59.
+- Instantiated modules are long gone. kmodtool is part of Fedora.
 
 * Thu May 11 2017 Simone Caronni <negativo17@gmail.com> - 2:381.22-2
 - Add kernel 4.11 patch.
