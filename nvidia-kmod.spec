@@ -9,14 +9,14 @@
 %{!?kversion: %global kversion 2.6.32-696.el6.%{_target_cpu}}
 %endif
 
-# RHEL 7.3 with an update
+# RHEL 7.3 with updates due to changing symbols
 %if 0%{?rhel} == 7
-%{!?kversion: %global kversion 3.10.0-514.10.2.el7.%{_target_cpu}}
+%{!?kversion: %global kversion 3.10.0-514.26.2.el7.%{_target_cpu}}
 %endif
 
 Name:           %{kmod_name}-kmod
-Version:        375.66
-Release:        2%{?dist}
+Version:        384.59
+Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          2
 License:        NVIDIA License
@@ -27,8 +27,6 @@ Source0:        %{kmod_name}-kmod-%{version}-i386.tar.xz
 Source1:        %{kmod_name}-kmod-%{version}-x86_64.tar.xz
 Source10:       kmodtool-%{kmod_name}-el6.sh
 
-Patch0:         kernel_4.11.patch
-
 BuildRequires:  redhat-rpm-config
 BuildRequires:  kernel-abi-whitelists
 
@@ -37,8 +35,6 @@ BuildRequires:  module-init-tools
 %else
 BuildRequires:  kmod
 %endif
-
-Conflicts:      nvidia-multi-kmod
 
 # Magic hidden here.
 %global kmodtool sh %{SOURCE10}
@@ -60,8 +56,6 @@ the same variant of the Linux kernel and not on any one specific build.
 %ifarch x86_64
 %setup -q -T -b 1 -n %{kmod_name}-kmod-%{version}-x86_64
 %endif
-
-%patch0 -p1
 
 mv kernel/* .
 
@@ -86,6 +80,10 @@ install kmod-%{kmod_name}.conf %{buildroot}%{_sysconfdir}/depmod.d/
 rm -f %{buildroot}/lib/modules/%{kversion}/modules.*
 
 %changelog
+* Wed Jul 26 2017 Simone Caronni <negativo17@gmail.com> - 2:384.59-1
+- Update to 384.59.
+- Instantiated module support is long gone.
+
 * Thu May 11 2017 Simone Caronni <negativo17@gmail.com> - 2:375.66-2
 - Add kernel 4.11 patch.
 
