@@ -9,14 +9,14 @@
 %{!?kversion: %global kversion 2.6.32-696.el6.%{_target_cpu}}
 %endif
 
-# RHEL 7.3 with updates due to changing symbols
+# RHEL 7.4
 %if 0%{?rhel} == 7
-%{!?kversion: %global kversion 3.10.0-514.26.2.el7.%{_target_cpu}}
+%{!?kversion: %global kversion 3.10.0-693.el7.%{_target_cpu}}
 %endif
 
 Name:           %{kmod_name}-kmod
 Version:        384.59
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          2
 License:        NVIDIA License
@@ -80,6 +80,9 @@ install kmod-%{kmod_name}.conf %{buildroot}%{_sysconfdir}/depmod.d/
 rm -f %{buildroot}/lib/modules/%{kversion}/modules.*
 
 %changelog
+* Fri Aug 25 2017 Simone Caronni <negativo17@gmail.com> - 2:384.59-2
+- Requires RHEL/CentOS 7.4 kernel.
+
 * Wed Jul 26 2017 Simone Caronni <negativo17@gmail.com> - 2:384.59-1
 - Update to 384.59.
 - Instantiated module support is long gone.
