@@ -15,8 +15,8 @@
 %endif
 
 Name:           %{kmod_name}-kmod
-Version:        384.59
-Release:        2%{?dist}
+Version:        384.69
+Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          2
 License:        NVIDIA License
@@ -80,6 +80,9 @@ install kmod-%{kmod_name}.conf %{buildroot}%{_sysconfdir}/depmod.d/
 rm -f %{buildroot}/lib/modules/%{kversion}/modules.*
 
 %changelog
+* Wed Aug 30 2017 Simone Caronni <negativo17@gmail.com> - 2:384.69-1
+- Update to 384.69.
+
 * Fri Aug 25 2017 Simone Caronni <negativo17@gmail.com> - 2:384.59-2
 - Requires RHEL/CentOS 7.4 kernel.
 
