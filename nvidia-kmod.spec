@@ -52,7 +52,7 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 %endif
 
 %ifarch x86_64
-%setup -q -b 1 -n %{name}-%{version}-x86_64
+%setup -q -T -b 1 -n %{name}-%{version}-x86_64
 %endif
 
 for kernel_version in %{?kernel_versions}; do
