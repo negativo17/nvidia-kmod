@@ -21,7 +21,7 @@
 
 Name:           nvidia-kmod
 Version:        387.12
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          2
 License:        NVIDIA License
@@ -66,6 +66,7 @@ for kernel_version in %{?kernel_versions}; do
         make %{?_smp_mflags} \
             IGNORE_XEN_PRESENCE=1 \
             IGNORE_PREEMPT_RT_PRESENCE=1 \
+            IGNORE_CC_MISMATCH=1 \
             SYSSRC="${kernel_version##*___}" \
             module
     popd
@@ -80,6 +81,10 @@ done
 %{?akmod_install}
 
 %changelog
+* Mon Oct 09 2017 Simone Caronni <negativo17@gmail.com> - 2:387.12-2
+- Ignore mismatching GCC version when compiling, useful when the distribution is
+  not yet released and compilers are being updated.
+
 * Thu Oct 05 2017 Simone Caronni <negativo17@gmail.com> - 2:387.12-1
 - Update to 387.12.
 
