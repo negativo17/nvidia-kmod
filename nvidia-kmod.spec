@@ -16,7 +16,7 @@
 
 Name:           %{kmod_name}-kmod
 Version:        390.25
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          2
 License:        NVIDIA License
@@ -26,6 +26,8 @@ ExclusiveArch:  %{ix86} x86_64
 Source0:        %{kmod_name}-kmod-%{version}-i386.tar.xz
 Source1:        %{kmod_name}-kmod-%{version}-x86_64.tar.xz
 Source10:       kmodtool-%{kmod_name}-el6.sh
+
+Patch0:         kernel_4.15.patch
 
 BuildRequires:  redhat-rpm-config
 BuildRequires:  kernel-abi-whitelists
@@ -57,6 +59,8 @@ the same variant of the Linux kernel and not on any one specific build.
 %setup -q -T -b 1 -n %{kmod_name}-kmod-%{version}-x86_64
 %endif
 
+%patch0 -p1
+
 mv kernel/* .
 
 echo "override %{kmod_name} * weak-updates/%{kmod_name}" > kmod-%{kmod_name}.conf
@@ -81,6 +85,9 @@ install kmod-%{kmod_name}.conf %{buildroot}%{_sysconfdir}/depmod.d/
 rm -f %{buildroot}/lib/modules/%{kversion}/modules.*
 
 %changelog
+* Wed Feb 21 2018 Simone Caronni <negativo17@gmail.com> - 2:390.25-2
+- Add kernel 4.15 patch.
+
 * Tue Jan 30 2018 Simone Caronni <negativo17@gmail.com> - 2:390.25-1
 - Update to 390.25.
 
