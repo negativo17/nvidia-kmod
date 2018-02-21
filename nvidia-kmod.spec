@@ -21,7 +21,7 @@
 
 Name:           nvidia-kmod
 Version:        390.25
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          2
 License:        NVIDIA License
@@ -31,6 +31,8 @@ ExclusiveArch:  i686 x86_64
 Source0:        %{name}-%{version}-i386.tar.xz
 Source1:        %{name}-%{version}-x86_64.tar.xz
 Source11:       nvidia-kmodtool-excludekernel-filterfile
+
+Patch0:         kernel_4.15.patch
 
 # get the needed BuildRequires (in parts depending on what we build for)
 BuildRequires:  kmodtool
@@ -54,6 +56,8 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 %ifarch x86_64
 %setup -q -T -b 1 -n %{name}-%{version}-x86_64
 %endif
+
+%patch0 -p1
 
 for kernel_version in %{?kernel_versions}; do
     mkdir _kmod_build_${kernel_version%%___*}
@@ -81,6 +85,9 @@ done
 %{?akmod_install}
 
 %changelog
+* Wed Feb 21 2018 Simone Caronni <negativo17@gmail.com> - 2:390.25-2
+- Add kernel 4.15 patch.
+
 * Tue Jan 30 2018 Simone Caronni <negativo17@gmail.com> - 2:390.25-1
 - Update to 390.25.
 
