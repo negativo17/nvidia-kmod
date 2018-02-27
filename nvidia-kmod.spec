@@ -16,9 +16,9 @@
 
 Name:           %{kmod_name}-kmod
 Version:        390.25
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        NVIDIA display driver kernel module
-Epoch:          2
+Epoch:          3
 License:        NVIDIA License
 URL:            http://www.nvidia.com/
 ExclusiveArch:  %{ix86} x86_64
@@ -85,6 +85,9 @@ install kmod-%{kmod_name}.conf %{buildroot}%{_sysconfdir}/depmod.d/
 rm -f %{buildroot}/lib/modules/%{kversion}/modules.*
 
 %changelog
+* Tue Feb 27 2018 Simone Caronni <negativo17@gmail.com> - 3:390.25-3
+- Update Epoch so packages do not overlap with RPMFusion.
+
 * Wed Feb 21 2018 Simone Caronni <negativo17@gmail.com> - 2:390.25-2
 - Add kernel 4.15 patch.
 
