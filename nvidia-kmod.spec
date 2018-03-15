@@ -20,8 +20,8 @@
   fi
 
 Name:           nvidia-kmod
-Version:        390.25
-Release:        3%{?dist}
+Version:        390.42
+Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
@@ -31,8 +31,6 @@ ExclusiveArch:  i686 x86_64
 Source0:        %{name}-%{version}-i386.tar.xz
 Source1:        %{name}-%{version}-x86_64.tar.xz
 Source11:       nvidia-kmodtool-excludekernel-filterfile
-
-Patch0:         kernel_4.15.patch
 
 # get the needed BuildRequires (in parts depending on what we build for)
 BuildRequires:  kmodtool
@@ -56,8 +54,6 @@ kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterf
 %ifarch x86_64
 %setup -q -T -b 1 -n %{name}-%{version}-x86_64
 %endif
-
-%patch0 -p1
 
 for kernel_version in %{?kernel_versions}; do
     mkdir _kmod_build_${kernel_version%%___*}
@@ -85,6 +81,9 @@ done
 %{?akmod_install}
 
 %changelog
+* Thu Mar 15 2018 Simone Caronni <negativo17@gmail.com> - 3:390.42-1
+- Update to 390.42.
+
 * Tue Feb 27 2018 Simone Caronni <negativo17@gmail.com> - 3:390.25-3
 - Update Epoch so packages do not overlap with RPMFusion.
 
