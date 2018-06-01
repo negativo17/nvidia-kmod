@@ -20,16 +20,15 @@
   fi
 
 Name:           nvidia-kmod
-Version:        390.59
+Version:        396.24
 Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
 URL:            http://www.nvidia.com/object/unix.html
-ExclusiveArch:  i686 x86_64
+ExclusiveArch:  x86_64
 
-Source0:        %{name}-%{version}-i386.tar.xz
-Source1:        %{name}-%{version}-x86_64.tar.xz
+Source0:        %{name}-%{version}-x86_64.tar.xz
 Source11:       nvidia-kmodtool-excludekernel-filterfile
 
 # get the needed BuildRequires (in parts depending on what we build for)
@@ -47,13 +46,7 @@ The NVidia %{version} display driver kernel module for kernel %{kversion}.
 # print kmodtool output for debugging purposes:
 kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} --obsolete-name nvidia-newest --obsolete-version "%{version}" %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 
-%ifarch %{ix86}
-%setup -q -n %{name}-%{version}-i386
-%endif
-
-%ifarch x86_64
-%setup -q -T -b 1 -n %{name}-%{version}-x86_64
-%endif
+%setup -q -n %{name}-%{version}-x86_64
 
 for kernel_version in %{?kernel_versions}; do
     mkdir _kmod_build_${kernel_version%%___*}
@@ -81,6 +74,9 @@ done
 %{?akmod_install}
 
 %changelog
+* Fri Jun 01 2018 Simone Caronni <negativo17@gmail.com> - 3:396.24-1
+- Update to 396.24, x86_64 only.
+
 * Tue May 22 2018 Simone Caronni <negativo17@gmail.com> - 3:390.59-1
 - Update to 390.59.
 
