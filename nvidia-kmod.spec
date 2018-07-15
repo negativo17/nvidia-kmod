@@ -4,9 +4,9 @@
 # If kversion isn't defined on the rpmbuild line, define it here. For Fedora,
 # kversion needs always to be defined as there is no kABI support.
 
-# RHEL 6.9
+# RHEL 6.10
 %if 0%{?rhel} == 6
-%{!?kversion: %global kversion 2.6.32-696.el6.%{_target_cpu}}
+%{!?kversion: %global kversion 2.6.32-754.el6.%{_target_cpu}}
 %endif
 
 # RHEL 7.5
