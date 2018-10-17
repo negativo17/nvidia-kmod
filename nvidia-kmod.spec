@@ -15,18 +15,18 @@
 %endif
 
 Name:           %{kmod_name}-kmod
-Version:        390.87
+Version:        410.66
 Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
 URL:            http://www.nvidia.com/
-ExclusiveArch:  %{ix86} x86_64
+ExclusiveArch:  x86_64
 
-Source0:        %{kmod_name}-kmod-%{version}-i386.tar.xz
-Source1:        %{kmod_name}-kmod-%{version}-x86_64.tar.xz
+Source0:        %{kmod_name}-kmod-%{version}-x86_64.tar.xz
 Source10:       kmodtool-%{kmod_name}-el6.sh
 
+BuildRequires:  gcc
 BuildRequires:  redhat-rpm-config
 BuildRequires:  kernel-abi-whitelists
 
@@ -49,13 +49,7 @@ It is built to depend upon the specific ABI provided by a range of releases of
 the same variant of the Linux kernel and not on any one specific build.
 
 %prep
-%ifarch %{ix86}
-%setup -q -n %{kmod_name}-kmod-%{version}-i386
-%endif
-
-%ifarch x86_64
-%setup -q -T -b 1 -n %{kmod_name}-kmod-%{version}-x86_64
-%endif
+%autosetup -n %{kmod_name}-kmod-%{version}-x86_64
 
 mv kernel/* .
 
@@ -81,6 +75,9 @@ install kmod-%{kmod_name}.conf %{buildroot}%{_sysconfdir}/depmod.d/
 rm -f %{buildroot}/lib/modules/%{kversion}/modules.*
 
 %changelog
+* Wed Oct 17 2018 Simone Caronni <negativo17@gmail.com> - 3:410.66-1
+- Update to 410.66.
+
 * Thu Sep 06 2018 Simone Caronni <negativo17@gmail.com> - 3:390.87-1
 - Update to 390.87.
 
