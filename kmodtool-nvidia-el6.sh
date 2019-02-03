@@ -132,7 +132,7 @@ get_rpmtemplate ()
     cat <<EOF
 Provides:         kabi-modules = ${verrel}${dotvariant}
 Provides:         ${kmod_name}-kmod = %{?epoch:%{epoch}:}%{version}-%{release}
-Requires:         ${kmod_name}-driver = %{?epoch:%{epoch}:}%{version}
+Requires:         ${kmod_name}-kmod-common = %{?epoch:%{epoch}:}%{version}
 Requires:         module-init-tools
 EOF
 
