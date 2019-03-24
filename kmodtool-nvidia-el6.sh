@@ -29,18 +29,6 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-# Changelog:
-#
-# 2013/11/01 - Remove print while running depmod
-#
-# 2010/07/28 - Add fixes for filelists in line with LF standard
-#            - Remove now defunct "framepointer" kernel variant
-#            - Change version to "rhel6-rh2" as a consequence.
-#
-# 2010/01/10 - Simplified for RHEL6. We are working on upstream
-#              moving to a newer format and in any case do not
-#              need to retain support for really old systems.
-
 shopt -s extglob
 
 myprog="kmodtool"
@@ -135,11 +123,6 @@ Provides:         ${kmod_name}-kmod = %{?epoch:%{epoch}:}%{version}-%{release}
 Requires:         ${kmod_name}-kmod-common = %{?epoch:%{epoch}:}%{version}
 Requires:         module-init-tools
 EOF
-
-    if [ "no" != "$nobuildreqs" ]
-    then
-        echo "BuildRequires: kernel${dashvariant}-devel"
-    fi
 
     if [ "" != "$override_preamble" ]
     then

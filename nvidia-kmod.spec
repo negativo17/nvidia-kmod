@@ -6,12 +6,12 @@
 
 # RHEL 6.10
 %if 0%{?rhel} == 6
-%{!?kversion: %global kversion 2.6.32-754.el6.%{_target_cpu}}
+%{!?kversion: %global kversion 2.6.32-754.el6}
 %endif
 
 # RHEL 7.6
 %if 0%{?rhel} == 7
-%{!?kversion: %global kversion 3.10.0-957.el7.%{_target_cpu}}
+%{!?kversion: %global kversion 3.10.0-957.el7}
 %endif
 
 Name:           %{kmod_name}-kmod
@@ -28,7 +28,8 @@ Source10:       kmodtool-%{kmod_name}-el6.sh
 
 BuildRequires:  gcc
 BuildRequires:  redhat-rpm-config
-BuildRequires:  kernel-abi-whitelists
+BuildRequires:  kernel-devel %{?kversion:== %{kversion}}
+BuildRequires:  kernel-abi-whitelists %{?kversion:== %{kversion}}
 
 %if 0%{?rhel} == 6
 BuildRequires:  module-init-tools
@@ -38,7 +39,7 @@ BuildRequires:  kmod
 
 # Magic hidden here.
 %global kmodtool sh %{SOURCE10}
-%{expand:%(%{kmodtool} rpmtemplate %{kmod_name} %{kversion} "" 2>/dev/null)}
+%{expand:%(%{kmodtool} rpmtemplate %{kmod_name} %{kversion}.%{_target_cpu} "" 2>/dev/null)}
 
 # Disable building of the debug package(s).
 %global	debug_package %{nil}
@@ -56,7 +57,7 @@ mv kernel/* .
 echo "override %{kmod_name} * weak-updates/%{kmod_name}" > kmod-%{kmod_name}.conf
 
 %build
-export SYSSRC=%{_usrsrc}/kernels/%{kversion}
+export SYSSRC=%{_usrsrc}/kernels/%{kversion}.%{_target_cpu}
 export IGNORE_XEN_PRESENCE=1
 export IGNORE_PREEMPT_RT_PRESENCE=1
 export IGNORE_CC_MISMATCH=1
@@ -66,17 +67,18 @@ make %{?_smp_mflags} module
 %install
 export INSTALL_MOD_PATH=%{buildroot}
 export INSTALL_MOD_DIR=extra/%{kmod_name}
-ksrc=%{_usrsrc}/kernels/%{kversion}
+ksrc=%{_usrsrc}/kernels/%{kversion}.%{_target_cpu}
 make -C "${ksrc}" modules_install M=$PWD
 
 install -d %{buildroot}%{_sysconfdir}/depmod.d/
 install kmod-%{kmod_name}.conf %{buildroot}%{_sysconfdir}/depmod.d/
 # Remove the unrequired files.
-rm -f %{buildroot}/lib/modules/%{kversion}/modules.*
+rm -f %{buildroot}/lib/modules/%{kversion}.%{_target_cpu}/modules.*
 
 %changelog
 * Sun Mar 24 2019 Simone Caronni <negativo17@gmail.com> - 3:418.56-1
 - Update to 418.56.
+- Change logic for kernel versions.
 
 * Fri Feb 22 2019 Simone Caronni <negativo17@gmail.com> - 3:418.43-1
 - Update to 418.43.
