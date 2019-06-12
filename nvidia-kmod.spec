@@ -15,7 +15,7 @@
 %endif
 
 Name:           %{kmod_name}-kmod
-Version:        430.14
+Version:        430.26
 Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
@@ -76,6 +76,9 @@ install kmod-%{kmod_name}.conf %{buildroot}%{_sysconfdir}/depmod.d/
 rm -f %{buildroot}/lib/modules/%{kversion}.%{_target_cpu}/modules.*
 
 %changelog
+* Wed Jun 12 2019 Simone Caronni <negativo17@gmail.com> - 3:430.26-1
+- Update to 430.26.
+
 * Fri Jun 07 2019 Simone Caronni <negativo17@gmail.com> - 3:430.14-1
 - Update to 430.14.
 
