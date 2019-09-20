@@ -9,14 +9,14 @@
 %{!?kversion: %global kversion 2.6.32-754.el6}
 %endif
 
-# RHEL 7.6
+# RHEL 7.7
 %if 0%{?rhel} == 7
-%{!?kversion: %global kversion 3.10.0-957.el7}
+%{!?kversion: %global kversion 3.10.0-1062.el7}
 %endif
 
 Name:           %{kmod_name}-kmod
 Version:        430.50
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
@@ -76,6 +76,9 @@ install kmod-%{kmod_name}.conf %{buildroot}%{_sysconfdir}/depmod.d/
 rm -f %{buildroot}/lib/modules/%{kversion}.%{_target_cpu}/modules.*
 
 %changelog
+* Fri Sep 20 2019 Simone Caronni <negativo17@gmail.com> - 3:430.50-2
+- Build for 7.7 kernels.
+
 * Sat Sep 14 2019 Simone Caronni <negativo17@gmail.com> - 3:430.50-1
 - Update to 430.50.
 
