@@ -14,9 +14,14 @@
 %{!?kversion: %global kversion 3.10.0-1062.el7}
 %endif
 
+# RHEL 8.0
+%if 0%{?rhel} == 8
+%{!?kversion: %global kversion 4.18.0-80.el8}
+%endif
+
 Name:           %{kmod_name}-kmod
-Version:        430.50
-Release:        2%{?dist}
+Version:        435.21
+Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
@@ -35,6 +40,10 @@ BuildRequires:  kernel-abi-whitelists %{?kversion:== %{kversion}}
 BuildRequires:  module-init-tools
 %else
 BuildRequires:  kmod
+%endif
+
+%if 0%{?rhel} == 8
+BuildRequires:  elfutils-libelf-devel
 %endif
 
 # Magic hidden here.
@@ -76,6 +85,9 @@ install kmod-%{kmod_name}.conf %{buildroot}%{_sysconfdir}/depmod.d/
 rm -f %{buildroot}/lib/modules/%{kversion}.%{_target_cpu}/modules.*
 
 %changelog
+* Tue Oct 01 2019 Simone Caronni <negativo17@gmail.com> - 3:435.21-1
+- Update to 435.21.
+
 * Fri Sep 20 2019 Simone Caronni <negativo17@gmail.com> - 3:430.50-2
 - Build for 7.7 kernels.
 
