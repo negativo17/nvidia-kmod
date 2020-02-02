@@ -46,7 +46,7 @@ The NVidia %{version} display driver kernel module for kernel %{kversion}.
 # print kmodtool output for debugging purposes:
 kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} --obsolete-name nvidia-newest --obsolete-version "%{version}" %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 
-%setup -q -n %{name}-%{version}-x86_64
+%autosetup -p1 -n %{name}-%{version}-x86_64
 
 for kernel_version in %{?kernel_versions}; do
     mkdir _kmod_build_${kernel_version%%___*}
