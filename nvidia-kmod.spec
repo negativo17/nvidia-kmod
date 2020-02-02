@@ -14,14 +14,14 @@
 %{!?kversion: %global kversion 3.10.0-1062.el7}
 %endif
 
-# RHEL 8.0
+# RHEL 8.1
 %if 0%{?rhel} == 8
-%{!?kversion: %global kversion 4.18.0-80.el8}
+%{!?kversion: %global kversion 4.18.0-147.el8}
 %endif
 
 Name:           %{kmod_name}-kmod
 Version:        440.44
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
@@ -59,7 +59,7 @@ It is built to depend upon the specific ABI provided by a range of releases of
 the same variant of the Linux kernel and not on any one specific build.
 
 %prep
-%autosetup -n %{kmod_name}-kmod-%{version}-x86_64
+%autosetup -p1 -n %{kmod_name}-kmod-%{version}-x86_64
 
 mv kernel/* .
 
@@ -85,6 +85,9 @@ install kmod-%{kmod_name}.conf %{buildroot}%{_sysconfdir}/depmod.d/
 rm -f %{buildroot}/lib/modules/%{kversion}.%{_target_cpu}/modules.*
 
 %changelog
+* Sun Feb 02 2020 Simone Caronni <negativo17@gmail.com> - 3:440.44-2
+- Rebuild for CentOS/RHEL 8.1 kernels.
+
 * Sat Dec 14 2019 Simone Caronni <negativo17@gmail.com> - 3:440.44-1
 - Update to 440.44.
 
