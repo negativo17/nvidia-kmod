@@ -20,8 +20,8 @@
 %endif
 
 Name:           %{kmod_name}-kmod
-Version:        440.44
-Release:        2%{?dist}
+Version:        440.59
+Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
@@ -85,6 +85,9 @@ install kmod-%{kmod_name}.conf %{buildroot}%{_sysconfdir}/depmod.d/
 rm -f %{buildroot}/lib/modules/%{kversion}.%{_target_cpu}/modules.*
 
 %changelog
+* Tue Feb 04 2020 Simone Caronni <negativo17@gmail.com> - 3:440.59-1
+- Update to 440.59.
+
 * Sun Feb 02 2020 Simone Caronni <negativo17@gmail.com> - 3:440.44-2
 - Rebuild for CentOS/RHEL 8.1 kernels.
 
