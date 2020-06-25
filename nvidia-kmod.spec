@@ -9,14 +9,14 @@
 %{!?kversion: %global kversion 2.6.32-754.el6}
 %endif
 
-# RHEL 7.7
+# RHEL 7.8
 %if 0%{?rhel} == 7
-%{!?kversion: %global kversion 3.10.0-1062.el7}
+%{!?kversion: %global kversion 3.10.0-1127.el7}
 %endif
 
-# RHEL 8.1
+# RHEL 8.2
 %if 0%{?rhel} == 8
-%{!?kversion: %global kversion 4.18.0-147.el8}
+%{!?kversion: %global kversion 4.18.0-193.6.3.el8_2}
 %endif
 
 Name:           %{kmod_name}-kmod
