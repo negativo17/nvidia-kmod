@@ -6,21 +6,21 @@
 
 # RHEL 6.10
 %if 0%{?rhel} == 6
-%{!?kversion: %global kversion 2.6.32-754.el6}
+%{!?kversion: %global kversion 2.6.32-754.31.1.el6}
 %endif
 
 # RHEL 7.8
 %if 0%{?rhel} == 7
-%{!?kversion: %global kversion 3.10.0-1127.el7}
+%{!?kversion: %global kversion 3.10.0-1127.18.2.el7}
 %endif
 
 # RHEL 8.2
 %if 0%{?rhel} == 8
-%{!?kversion: %global kversion 4.18.0-193.6.3.el8_2}
+%{!?kversion: %global kversion 4.18.0-193.14.2.el8_2}
 %endif
 
 Name:           %{kmod_name}-kmod
-Version:        450.57
+Version:        450.66
 Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
@@ -85,6 +85,9 @@ install kmod-%{kmod_name}.conf %{buildroot}%{_sysconfdir}/depmod.d/
 rm -f %{buildroot}/lib/modules/%{kversion}.%{_target_cpu}/modules.*
 
 %changelog
+* Thu Aug 20 2020 Simone Caronni <negativo17@gmail.com> - 3:450.66-1
+- Update to 450.66.
+
 * Fri Jul 10 2020 Simone Caronni <negativo17@gmail.com> - 3:450.57-1
 - Update to 450.57.
 
