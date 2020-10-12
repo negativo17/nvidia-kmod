@@ -20,7 +20,7 @@
   fi
 
 Name:           nvidia-kmod
-Version:        450.80.02
+Version:        455.28
 Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
@@ -74,6 +74,9 @@ done
 %{?akmod_install}
 
 %changelog
+* Mon Oct 12 2020 Simone Caronni <negativo17@gmail.com> - 3:455.28-1
+- Update to 455.28.
+
 * Tue Oct 06 2020 Simone Caronni <negativo17@gmail.com> - 3:450.80.02-1
 - Update to 450.80.02.
 
