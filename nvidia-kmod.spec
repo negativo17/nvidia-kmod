@@ -21,7 +21,7 @@
 
 Name:           nvidia-kmod
 Version:        455.45.01
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
@@ -30,6 +30,8 @@ ExclusiveArch:  x86_64
 
 Source0:        %{name}-%{version}-x86_64.tar.xz
 Source11:       nvidia-kmodtool-excludekernel-filterfile
+
+Patch0:         https://people.freedesktop.org/~aplattner/reduce-kmalloc-limit-455.38.patch
 
 # get the needed BuildRequires (in parts depending on what we build for)
 BuildRequires:  kmodtool
@@ -46,7 +48,7 @@ The NVidia %{version} display driver kernel module for kernel %{kversion}.
 # print kmodtool output for debugging purposes:
 kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} --obsolete-name nvidia-newest --obsolete-version "%{version}" %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 
-%autosetup -p1 -n %{name}-%{version}-x86_64
+%autosetup -p0 -n %{name}-%{version}-x86_64
 
 for kernel_version in %{?kernel_versions}; do
     mkdir _kmod_build_${kernel_version%%___*}
@@ -74,6 +76,10 @@ done
 %{?akmod_install}
 
 %changelog
+* Sun Nov 29 2020 Simone Caronni <negativo17@gmail.com> - 3:455.45.01-2
+- Add temporary patch for memory allocation:
+  https://forums.developer.nvidia.com/t/455-23-04-page-allocation-failure-in-kernel-module-at-random-points/155250
+
 * Wed Nov 18 2020 Simone Caronni <negativo17@gmail.com> - 3:455.45.01-1
 - Update to 455.45.01.
 
