@@ -4,24 +4,19 @@
 # If kversion isn't defined on the rpmbuild line, define it here. For Fedora,
 # kversion needs always to be defined as there is no kABI support.
 
-# RHEL 6.10
-%if 0%{?rhel} == 6
-%{!?kversion: %global kversion 2.6.32-754.31.1.el6}
-%endif
-
-# RHEL 7.8
+# RHEL 7.9
 %if 0%{?rhel} == 7
-%{!?kversion: %global kversion 3.10.0-1127.18.2.el7}
+%{!?kversion: %global kversion 3.10.0-1160.6.1.el7}
 %endif
 
 # RHEL 8.2
 %if 0%{?rhel} == 8
-%{!?kversion: %global kversion 4.18.0-193.19.1.el8_2}
+%{!?kversion: %global kversion 4.18.0-193.28.1.el8_2}
 %endif
 
 Name:           %{kmod_name}-kmod
 Version:        450.80.02
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
@@ -35,12 +30,7 @@ BuildRequires:  gcc
 BuildRequires:  redhat-rpm-config
 BuildRequires:  kernel-devel %{?kversion:== %{kversion}}
 BuildRequires:  kernel-abi-whitelists %{?kversion:== %{kversion}}
-
-%if 0%{?rhel} == 6
-BuildRequires:  module-init-tools
-%else
 BuildRequires:  kmod
-%endif
 
 %if 0%{?rhel} == 8
 BuildRequires:  elfutils-libelf-devel
@@ -85,6 +75,9 @@ install kmod-%{kmod_name}.conf %{buildroot}%{_sysconfdir}/depmod.d/
 rm -f %{buildroot}/lib/modules/%{kversion}.%{_target_cpu}/modules.*
 
 %changelog
+* Mon Dec 07 2020 Simone Caronni <negativo17@gmail.com> - 3:450.80.02-2
+- Drop support for CentOS/RHEL 6.
+
 * Tue Oct 06 2020 Simone Caronni <negativo17@gmail.com> - 3:450.80.02-1
 - Update to 450.80.02.
 
