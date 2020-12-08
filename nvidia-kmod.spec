@@ -9,9 +9,9 @@
 %{!?kversion: %global kversion 3.10.0-1160.6.1.el7}
 %endif
 
-# RHEL 8.2
+# RHEL 8.3
 %if 0%{?rhel} == 8
-%{!?kversion: %global kversion 4.18.0-193.28.1.el8_2}
+%{!?kversion: %global kversion 4.18.0-240.1.1.el8_3}
 %endif
 
 Name:           %{kmod_name}-kmod
