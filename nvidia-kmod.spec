@@ -21,7 +21,7 @@
 
 Name:           nvidia-kmod
 Version:        455.45.01
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
@@ -29,7 +29,6 @@ URL:            http://www.nvidia.com/object/unix.html
 ExclusiveArch:  x86_64
 
 Source0:        %{name}-%{version}-x86_64.tar.xz
-Source11:       nvidia-kmodtool-excludekernel-filterfile
 
 Patch0:         https://people.freedesktop.org/~aplattner/reduce-kmalloc-limit-455.38.patch
 
@@ -37,7 +36,7 @@ Patch0:         https://people.freedesktop.org/~aplattner/reduce-kmalloc-limit-4
 BuildRequires:  kmodtool
 
 # kmodtool does its magic here
-%{expand:%(kmodtool --target %{_target_cpu} --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} --obsolete-name nvidia-newest --obsolete-version "%{version}" %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null) }
+%{expand:%(kmodtool --target %{_target_cpu} --repo negativo17.org --kmodname %{name} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null) }
 
 %description
 The NVidia %{version} display driver kernel module for kernel %{kversion}.
@@ -46,7 +45,7 @@ The NVidia %{version} display driver kernel module for kernel %{kversion}.
 # error out if there was something wrong with kmodtool
 %{?kmodtool_check}
 # print kmodtool output for debugging purposes:
-kmodtool  --target %{_target_cpu}  --repo rpmfusion --kmodname %{name} --filterfile %{SOURCE11} --obsolete-name nvidia-newest --obsolete-version "%{version}" %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
+kmodtool  --target %{_target_cpu}  --repo negativo17.org --kmodname %{name} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 
 %autosetup -p0 -n %{name}-%{version}-x86_64
 
@@ -76,6 +75,9 @@ done
 %{?akmod_install}
 
 %changelog
+* Wed Dec 16 2020 Simone Caronni <negativo17@gmail.com> - 3:455.45.01-3
+- Clean up SPEC file.
+
 * Sun Nov 29 2020 Simone Caronni <negativo17@gmail.com> - 3:455.45.01-2
 - Add temporary patch for memory allocation:
   https://forums.developer.nvidia.com/t/455-23-04-page-allocation-failure-in-kernel-module-at-random-points/155250
