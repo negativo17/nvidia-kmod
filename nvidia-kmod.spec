@@ -15,8 +15,8 @@
 %endif
 
 Name:           %{kmod_name}-kmod
-Version:        450.80.02
-Release:        2%{?dist}
+Version:        460.27.04
+Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
@@ -75,6 +75,10 @@ install kmod-%{kmod_name}.conf %{buildroot}%{_sysconfdir}/depmod.d/
 rm -f %{buildroot}/lib/modules/%{kversion}.%{_target_cpu}/modules.*
 
 %changelog
+* Sun Dec 20 2020 Simone Caronni <negativo17@gmail.com> - 3:460.27.04-1
+- Update to 460.27.04.
+- Trim changelog.
+
 * Mon Dec 07 2020 Simone Caronni <negativo17@gmail.com> - 3:450.80.02-2
 - Drop support for CentOS/RHEL 6.
 
@@ -148,51 +152,3 @@ rm -f %{buildroot}/lib/modules/%{kversion}.%{_target_cpu}/modules.*
 
 * Fri Jan 04 2019 Simone Caronni <negativo17@gmail.com> - 3:410.93-1
 - Update to 410.93.
-
-* Mon Nov 19 2018 Simone Caronni <negativo17@gmail.com> - 3:410.78-1
-- Update to 410.78.
-
-* Sun Nov 18 2018 Simone Caronni <negativo17@gmail.com> - 3:410.73-2
-- Update for 7.6 kernel.
-
-* Fri Oct 26 2018 Simone Caronni <negativo17@gmail.com> - 3:410.73-1
-- Update to 410.73.
-
-* Wed Oct 17 2018 Simone Caronni <negativo17@gmail.com> - 3:410.66-1
-- Update to 410.66.
-
-* Thu Sep 06 2018 Simone Caronni <negativo17@gmail.com> - 3:390.87-1
-- Update to 390.87.
-
-* Tue Jul 17 2018 Simone Caronni <negativo17@gmail.com> - 3:390.77-1
-- Update to 390.77.
-
-* Mon Jun 11 2018 Simone Caronni <negativo17@gmail.com> - 3:390.67-1
-- Update to 390.67.
-
-* Tue May 22 2018 Simone Caronni <negativo17@gmail.com> - 3:390.59-1
-- Update to 390.59.
-
-* Wed May 02 2018 Simone Caronni <negativo17@gmail.com> - 3:390.48-2
-- Update for 7.5 kernel.
-
-* Tue Apr 03 2018 Simone Caronni <negativo17@gmail.com> - 3:390.48-1
-- Update to 390.48.
-
-* Wed Mar 21 2018 Simone Caronni <negativo17@gmail.com> - 3:390.42-2
-- Re-add kernel 4.15 patch.
-
-* Thu Mar 15 2018 Simone Caronni <negativo17@gmail.com> - 3:390.42-1
-- Update to 390.42.
-
-* Tue Feb 27 2018 Simone Caronni <negativo17@gmail.com> - 3:390.25-3
-- Update Epoch so packages do not overlap with RPMFusion.
-
-* Wed Feb 21 2018 Simone Caronni <negativo17@gmail.com> - 2:390.25-2
-- Add kernel 4.15 patch.
-
-* Tue Jan 30 2018 Simone Caronni <negativo17@gmail.com> - 2:390.25-1
-- Update to 390.25.
-
-* Thu Jan 11 2018 Simone Caronni <negativo17@gmail.com> - 2:384.111-1
-- Update to 384.111.
