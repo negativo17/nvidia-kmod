@@ -6,7 +6,7 @@
 
 # RHEL 7.9
 %if 0%{?rhel} == 7
-%{!?kversion: %global kversion 3.10.0-1160.6.1.el7}
+%{!?kversion: %global kversion 3.10.0-1160.11.1.el7}
 %endif
 
 # RHEL 8.3
