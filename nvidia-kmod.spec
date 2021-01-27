@@ -15,12 +15,12 @@
 
 # RHEL 8.3:
 %if 0%{?rhel} == 8
-%{!?kversion: %global kversion 4.18.0-240.1.1.el8_3}
+%{!?kversion: %global kversion 4.18.0-240.10.1.el8_3}
 %endif
 
 Name:           %{kmod_name}-kmod
-Version:        460.32.03
-Release:        2%{?dist}
+Version:        460.39
+Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
@@ -105,6 +105,9 @@ rm -f %{buildroot}/lib/modules/%{kversion}.%{_target_cpu}/modules.*
 %config /etc/depmod.d/kmod-%{kmod_name}.conf
 
 %changelog
+* Wed Jan 27 2021 Simone Caronni <negativo17@gmail.com> - 3:460.39-1
+- Update to 460.39.
+
 * Wed Jan 13 2021 Simone Caronni <negativo17@gmail.com> - 3:460.32.03-2
 - Merge kmodtool script into SPEC file and remove obsolete stuff.
 
