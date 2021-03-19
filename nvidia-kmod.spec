@@ -8,18 +8,16 @@
 # If kversion isn't defined on the rpmbuild line, define it here. For Fedora,
 # kversion needs always to be defined as there is no kABI support.
 
-# RHEL 7.9:
 %if 0%{?rhel} == 7
-%{!?kversion: %global kversion 3.10.0-1160.11.1.el7}
+%{!?kversion: %global kversion 3.10.0-1160.21.1.el7}
 %endif
 
-# RHEL 8.3:
 %if 0%{?rhel} == 8
-%{!?kversion: %global kversion 4.18.0-240.10.1.el8_3}
+%{!?kversion: %global kversion 4.18.0-240.15.1.el8_3}
 %endif
 
 Name:           %{kmod_name}-kmod
-Version:        460.56
+Version:        460.67
 Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
@@ -105,6 +103,9 @@ rm -f %{buildroot}/lib/modules/%{kversion}.%{_target_cpu}/modules.*
 %config /etc/depmod.d/kmod-%{kmod_name}.conf
 
 %changelog
+* Fri Mar 19 2021 Simone Caronni <negativo17@gmail.com> - 3:460.67-1
+- Update to 460.67.
+
 * Mon Mar 01 2021 Simone Caronni <negativo17@gmail.com> - 3:460.56-1
 - Update to 460.56.
 
