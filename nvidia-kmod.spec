@@ -13,7 +13,7 @@
 %endif
 
 %if 0%{?rhel} == 8
-%{!?kversion: %global kversion 4.18.0-240.15.1.el8_3}
+%{!?kversion: %global kversion 4.18.0-240.22.1.el8_3}
 %endif
 
 Name:           %{kmod_name}-kmod
