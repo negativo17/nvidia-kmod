@@ -13,7 +13,7 @@
 %endif
 
 %if 0%{?rhel} == 8
-%{!?kversion: %global kversion 4.18.0-240.22.1.el8_3}
+%{!?kversion: %global kversion 4.18.0-305.3.1.el8}
 %endif
 
 Name:           %{kmod_name}-kmod
@@ -30,9 +30,14 @@ Source0:        %{kmod_name}-kmod-%{version}-x86_64.tar.xz
 BuildRequires:  elfutils-libelf-devel
 BuildRequires:  gcc
 BuildRequires:  kernel-devel %{?kversion:== %{kversion}}
-BuildRequires:  kernel-abi-whitelists %{?kversion:== %{kversion}}
 BuildRequires:  kmod
 BuildRequires:  redhat-rpm-config
+
+%if 0%{?rhel} == 7
+BuildRequires:  kernel-abi-whitelists %{?kversion:== %{kversion}}
+%else
+BuildRequires:  kernel-abi-stablelists %{?kversion:== %{kversion}}
+%endif
 
 %description
 This package provides the proprietary NVIDIA OpenGL kernel driver module.
