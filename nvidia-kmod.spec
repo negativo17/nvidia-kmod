@@ -9,15 +9,15 @@
 # kversion needs always to be defined as there is no kABI support.
 
 %if 0%{?rhel} == 7
-%{!?kversion: %global kversion 3.10.0-1160.25.1.el7}
+%{!?kversion: %global kversion 3.10.0-1160.31.1.el7}
 %endif
 
 %if 0%{?rhel} == 8
-%{!?kversion: %global kversion 4.18.0-305.3.1.el8}
+%{!?kversion: %global kversion 4.18.0-305.10.2.el8_4}
 %endif
 
 Name:           %{kmod_name}-kmod
-Version:        460.84
+Version:        470.57.02
 Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
@@ -108,6 +108,9 @@ rm -f %{buildroot}/lib/modules/%{kversion}.%{_target_cpu}/modules.*
 %config /etc/depmod.d/kmod-%{kmod_name}.conf
 
 %changelog
+* Tue Jul 20 2021 Simone Caronni <negativo17@gmail.com> - 3:470.57.02-1
+- Update to 470.57.02.
+
 * Mon Jun 07 2021 Simone Caronni <negativo17@gmail.com> - 3:460.84-1
 - Update to 460.84.
 
