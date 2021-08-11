@@ -9,7 +9,7 @@
 # kversion needs always to be defined as there is no kABI support.
 
 %if 0%{?rhel} == 7
-%{!?kversion: %global kversion 3.10.0-1160.31.1.el7}
+%{!?kversion: %global kversion 3.10.0-1160.36.2.el7}
 %endif
 
 %if 0%{?rhel} == 8
