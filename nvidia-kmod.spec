@@ -7,21 +7,20 @@
 
 %global debug_package %{nil}
 
-%global zipmodules 1
-
 %define __spec_install_post \
   %{__arch_install_post}\
   %{__os_install_post}\
   %{__mod_compress_install_post}
 
 %define __mod_compress_install_post \
-  if [ "%{zipmodules}" -eq "1" ] && [ $kernel_version ]; then \
-    find %{buildroot}/usr/lib/modules/ -type f -name '*.ko' | xargs xz; \
+  if [ $kernel_version ]; then \
+    find %{buildroot} -type f -name '*.ko' | xargs %{__strip} --strip-debug; \
+    find %{buildroot} -type f -name '*.ko' | xargs xz; \
   fi
 
 Name:           nvidia-kmod
 Version:        470.63.01
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
@@ -73,6 +72,9 @@ done
 %{?akmod_install}
 
 %changelog
+* Wed Aug 18 2021 Simone Caronni <negativo17@gmail.com> - 3:470.63.01-2
+- Fix compression, add stripping.
+
 * Wed Aug 11 2021 Simone Caronni <negativo17@gmail.com> - 3:470.63.01-1
 - Update to 470.63.01.
 
