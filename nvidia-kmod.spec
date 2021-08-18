@@ -5,20 +5,22 @@
 # Generate kernel symbols requirements:
 %global _use_internal_dependency_generator 0
 
-# If kversion isn't defined on the rpmbuild line, define it here. For Fedora,
-# kversion needs always to be defined as there is no kABI support.
+%define __spec_install_post \
+  %{__arch_install_post}\
+  %{__os_install_post}\
+  %{__mod_compress_install_post}
 
-%if 0%{?rhel} == 7
-%{!?kversion: %global kversion 3.10.0-1160.36.2.el7}
-%endif
+%define __mod_compress_install_post \
+  if [ $kernel_version ]; then \
+    find %{buildroot} -type f -name '*.ko' | xargs %{__strip} --strip-debug; \
+    find %{buildroot} -type f -name '*.ko' | xargs xz; \
+  fi
 
-%if 0%{?rhel} == 8
-%{!?kversion: %global kversion 4.18.0-305.10.2.el8_4}
-%endif
+%{!?kversion: %global kversion %(uname -r)}
 
 Name:           %{kmod_name}-kmod
 Version:        470.63.01
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
@@ -29,14 +31,15 @@ Source0:        %{kmod_name}-kmod-%{version}-x86_64.tar.xz
 
 BuildRequires:  elfutils-libelf-devel
 BuildRequires:  gcc
-BuildRequires:  kernel-devel %{?kversion:== %{kversion}}
+BuildRequires:  kernel-devel
 BuildRequires:  kmod
 BuildRequires:  redhat-rpm-config
 
 %if 0%{?rhel} == 7
-BuildRequires:  kernel-abi-whitelists %{?kversion:== %{kversion}}
+BuildRequires:  kernel-abi-whitelists
 %else
-BuildRequires:  kernel-abi-stablelists %{?kversion:== %{kversion}}
+BuildRequires:  kernel-abi-stablelists
+BuildRequires:  kernel-rpm-macros
 %endif
 
 %description
@@ -90,7 +93,7 @@ export IGNORE_XEN_PRESENCE=1
 export IGNORE_PREEMPT_RT_PRESENCE=1
 export IGNORE_CC_MISMATCH=1
 
-make %{?_smp_mflags} module
+%make_build module
 
 %install
 export INSTALL_MOD_PATH=%{buildroot}
@@ -108,6 +111,12 @@ rm -f %{buildroot}/lib/modules/%{kversion}.%{_target_cpu}/modules.*
 %config /etc/depmod.d/kmod-%{kmod_name}.conf
 
 %changelog
+* Thu Aug 19 2021 Simone Caronni <negativo17@gmail.com> - 3:470.63.01-2
+- Fix compression, add stripping.
+- Add missing build requirement for correctly adding kernel symbols as
+  requirements.
+- Simplify SPEC file.
+
 * Wed Aug 11 2021 Simone Caronni <negativo17@gmail.com> - 3:470.63.01-1
 - Update to 470.63.01.
 
