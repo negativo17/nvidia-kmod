@@ -19,8 +19,8 @@
 %{!?kversion: %global kversion %(uname -r)}
 
 Name:           %{kmod_name}-kmod
-Version:        470.63.01
-Release:        2%{?dist}
+Version:        470.74
+Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
@@ -111,6 +111,9 @@ rm -f %{buildroot}/lib/modules/%{kversion}.%{_target_cpu}/modules.*
 %config /etc/depmod.d/kmod-%{kmod_name}.conf
 
 %changelog
+* Tue Sep 21 2021 Simone Caronni <negativo17@gmail.com> - 3:470.74-1
+- Update to 470.74.
+
 * Thu Aug 19 2021 Simone Caronni <negativo17@gmail.com> - 3:470.63.01-2
 - Fix compression, add stripping.
 - Add missing build requirement for correctly adding kernel symbols as
