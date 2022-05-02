@@ -19,7 +19,7 @@
 %{!?kversion: %global kversion %(uname -r)}
 
 Name:           %{kmod_name}-kmod
-Version:        510.60.02
+Version:        510.68.02
 Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
@@ -111,6 +111,9 @@ rm -f %{buildroot}/lib/modules/%{kversion}.%{_target_cpu}/modules.*
 %config /etc/depmod.d/kmod-%{kmod_name}.conf
 
 %changelog
+* Mon May 02 2022 Simone Caronni <negativo17@gmail.com> - 3:510.68.02-1
+- Update to 510.68.02.
+
 * Mon Mar 28 2022 Simone Caronni <negativo17@gmail.com> - 3:510.60.02-1
 - Update to 510.60.02.
 
