@@ -28,7 +28,7 @@
 
 Name:           nvidia-kmod
 Version:        510.68.02
-Release:        1%{?dist}
+Release:        1.1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
@@ -36,6 +36,9 @@ URL:            http://www.nvidia.com/object/unix.html
 ExclusiveArch:  x86_64
 
 Source0:        %{name}-%{version}-x86_64.tar.xz
+# Support the introduction of the SimpleFB in fc36
+Patch0:         nvidia-kmod-pci-request-regions.patch
+Patch1:         nvidia-kmod-simpledrm.patch
 
 # get the needed BuildRequires (in parts depending on what we build for)
 BuildRequires:  kmodtool
@@ -80,6 +83,9 @@ done
 %{?akmod_install}
 
 %changelog
+* Sat May 14 2022 Steve Storey <sstorey@gmail.com> - 510.68.02-1.1
+- Add patches to deal with the use of SimpleFB in fc36
+
 * Mon May 02 2022 Simone Caronni <negativo17@gmail.com> - 3:510.68.02-1
 - Update to 510.68.02.
 
