@@ -27,7 +27,7 @@
   fi
 
 Name:           nvidia-kmod
-Version:        535.104.05
+Version:        535.113.01
 Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
@@ -80,6 +80,9 @@ done
 %{?akmod_install}
 
 %changelog
+* Fri Sep 22 2023 Simone Caronni <negativo17@gmail.com> - 3:535.113.01-1
+- Update to 535.113.01.
+
 * Thu Aug 24 2023 Simone Caronni <negativo17@gmail.com> - 3:535.104.05-1
 - Update to 535.104.05.
 
