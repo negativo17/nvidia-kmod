@@ -31,35 +31,41 @@ kmodtool  --target %{_target_cpu}  --repo negativo17.org --kmodname %{name} %{?b
 
 %autosetup -p0 -n %{name}-%{version}-x86_64
 
+rm -f */dkms.conf
+
 for kernel_version in %{?kernel_versions}; do
     mkdir _kmod_build_${kernel_version%%___*}
-    cp -fr kernel/* _kmod_build_${kernel_version%%___*}
+    cp -fr kernel* _kmod_build_${kernel_version%%___*}
 done
 
 %build
+if [ -f /etc/nvidia.conf ]; then
+    . /etc/nvidia.conf
+fi
 for kernel_version in %{?kernel_versions}; do
     pushd _kmod_build_${kernel_version%%___*}/
-        make %{?_smp_mflags} \
-            IGNORE_XEN_PRESENCE=1 \
-            IGNORE_PREEMPT_RT_PRESENCE=1 \
-            IGNORE_CC_MISMATCH=1 \
-            SYSSRC="${kernel_version##*___}" \
-            module
+        make %{?_smp_mflags} -C ${MODULE_VARIANT} \
+            KERNEL_UNAME="${kernel_version%%___*}" modules
     popd
 done
 
 %install
+if [ -f /etc/nvidia.conf ]; then
+    . /etc/nvidia.conf
+fi
 for kernel_version in %{?kernel_versions}; do
     mkdir -p %{buildroot}/%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/
-    install -p -m 0755 _kmod_build_${kernel_version%%___*}/*.ko \
+    install -p -m 0755 _kmod_build_${kernel_version%%___*}/${MODULE_VARIANT}/*.ko \
         %{buildroot}/%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/
 done
 %{?akmod_install}
 
 %changelog
-* Sun Nov 12 2023 Simone Caronni <negativo17@gmail.com> - 3:545.29.02-2
+* Mon Nov 13 2023 Simone Caronni <negativo17@gmail.com> - 3:545.29.02-2
 - Trim changelog.
 - Drop custom signing and compressing in favour of kmodtool.
+- Allow building proprietary or open source modules.
+- Adjust compile command to match with what Nvidia ships nowadays.
 
 * Tue Oct 31 2023 Simone Caronni <negativo17@gmail.com> - 3:545.29.02-1
 - Update to 545.29.02.
