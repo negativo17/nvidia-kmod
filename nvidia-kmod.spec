@@ -1,8 +1,4 @@
-# buildforkernels macro hint: when you build a new version or a new release
-# that contains bugfixes or other improvements then you must disable the
-# "buildforkernels newest" macro for just that build; immediately after
-# queuing that build enable the macro again for subsequent builds; that way
-# a new akmod package will only get build when a new one is actually needed
+# Build only the akmod package and no kernel module packages:
 %define buildforkernels akmod
 
 %global debug_package %{nil}
@@ -18,19 +14,19 @@ ExclusiveArch:  x86_64
 
 Source0:        %{name}-%{version}-x86_64.tar.xz
 
-# get the needed BuildRequires (in parts depending on what we build for)
+# Get the needed BuildRequires (in parts depending on what we build for):
 BuildRequires:  kmodtool
 
-# kmodtool does its magic here
+# kmodtool does its magic here:
 %{expand:%(kmodtool --target %{_target_cpu} --repo negativo17.org --kmodname %{name} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null) }
 
 %description
 The NVidia %{version} display driver kernel module for kernel %{kversion}.
 
 %prep
-# error out if there was something wrong with kmodtool
+# Error out if there was something wrong with kmodtool:
 %{?kmodtool_check}
-# print kmodtool output for debugging purposes:
+# Print kmodtool output for debugging purposes:
 kmodtool  --target %{_target_cpu}  --repo negativo17.org --kmodname %{name} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 
 %autosetup -p0 -n %{name}-%{version}-x86_64
