@@ -5,7 +5,7 @@
 
 Name:           nvidia-kmod
 Version:        545.29.02
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
@@ -39,8 +39,8 @@ for kernel_version in %{?kernel_versions}; do
 done
 
 %build
-if [ -f /etc/nvidia.conf ]; then
-    . /etc/nvidia.conf
+if [ -f /etc/nvidia/kernel.conf ]; then
+    . /etc/nvidia/kernel.conf
 fi
 for kernel_version in %{?kernel_versions}; do
     pushd _kmod_build_${kernel_version%%___*}/
@@ -50,8 +50,8 @@ for kernel_version in %{?kernel_versions}; do
 done
 
 %install
-if [ -f /etc/nvidia.conf ]; then
-    . /etc/nvidia.conf
+if [ -f /etc/nvidia/kernel.conf ]; then
+    . /etc/nvidia/kernel.conf
 fi
 for kernel_version in %{?kernel_versions}; do
     mkdir -p %{buildroot}/%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/
@@ -61,6 +61,9 @@ done
 %{?akmod_install}
 
 %changelog
+* Tue Nov 14 2023 Simone Caronni <negativo17@gmail.com> - 3:545.29.02-3
+- Update location of configuration file.
+
 * Mon Nov 13 2023 Simone Caronni <negativo17@gmail.com> - 3:545.29.02-2
 - Trim changelog.
 - Drop custom signing and compressing in favour of kmodtool.
