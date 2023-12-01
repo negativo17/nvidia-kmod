@@ -4,8 +4,8 @@
 %global debug_package %{nil}
 
 Name:           nvidia-kmod
-Version:        545.29.02
-Release:        3%{?dist}
+Version:        545.29.06
+Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
@@ -61,6 +61,9 @@ done
 %{?akmod_install}
 
 %changelog
+* Fri Dec 01 2023 Simone Caronni <negativo17@gmail.com> - 3:545.29.06-1
+- Update to version 545.29.06.
+
 * Tue Nov 14 2023 Simone Caronni <negativo17@gmail.com> - 3:545.29.02-3
 - Update location of configuration file.
 
