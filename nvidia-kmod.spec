@@ -20,14 +20,15 @@
 
 Name:           %{kmod_name}-kmod
 Version:        550.54.14
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
 URL:            http://www.nvidia.com/
-ExclusiveArch:  x86_64
+ExclusiveArch:  x86_64 aarch64
 
 Source0:        %{kmod_name}-kmod-%{version}-x86_64.tar.xz
+Source1:        %{kmod_name}-kmod-%{version}-aarch64.tar.xz
 
 BuildRequires:  elfutils-libelf-devel
 BuildRequires:  gcc
@@ -58,30 +59,14 @@ Requires:   module-init-tools
 This package provides the %{kmod_name} kernel module(s) built for the Linux kernel
 using the %{_target_cpu} family of processors.
 
-%post -n kmod-%{kmod_name}
-if [ -e "/boot/System.map-%{kversion}.%{_target_cpu}" ]; then
-    /usr/sbin/depmod -aeF "/boot/System.map-%{kversion}.%{_target_cpu}" "%{kversion}.%{_target_cpu}" > /dev/null || :
-fi
-modules=( $(find /lib/modules/%{kversion}.%{_target_cpu}/extra/%{kmod_name} | grep '\.ko$') )
-if [ -x "/usr/sbin/weak-modules" ]; then
-    printf '%s\n' "${modules[@]}" | /usr/sbin/weak-modules --add-modules
-fi
-
-%preun -n kmod-%{kmod_name}
-rpm -ql kmod-%{kmod_name}-%{version}-%{release}.%{_target_cpu} | grep '\.ko$' > /var/run/rpm-kmod-%{kmod_name}-modules
-
-%postun -n kmod-%{kmod_name}
-if [ -e "/boot/System.map-%{kversion}.%{_target_cpu}" ]; then
-    /usr/sbin/depmod -aeF "/boot/System.map-%{kversion}.%{_target_cpu}" "%{kversion}.%{_target_cpu}" > /dev/null || :
-fi
-modules=( $(cat /var/run/rpm-kmod-%{kmod_name}-modules) )
-rm /var/run/rpm-kmod-%{kmod_name}-modules
-if [ -x "/usr/sbin/weak-modules" ]; then
-    printf '%s\n' "${modules[@]}" | /usr/sbin/weak-modules --remove-modules
-fi
-
 %prep
-%autosetup -p1 -n %{kmod_name}-kmod-%{version}-x86_64
+%ifarch x86_64
+%setup -q -n %{kmod_name}-kmod-%{version}-x86_64
+%endif
+
+%ifarch aarch64
+%setup -q -T -b 1 -n %{kmod_name}-kmod-%{version}-aarch64
+%endif
 
 mv kernel/* .
 
@@ -106,11 +91,36 @@ install kmod-%{kmod_name}.conf %{buildroot}%{_sysconfdir}/depmod.d/
 # Remove the unrequired files.
 rm -f %{buildroot}/lib/modules/%{kversion}.%{_target_cpu}/modules.*
 
+%post -n kmod-%{kmod_name}
+if [ -e "/boot/System.map-%{kversion}.%{_target_cpu}" ]; then
+    /usr/sbin/depmod -aeF "/boot/System.map-%{kversion}.%{_target_cpu}" "%{kversion}.%{_target_cpu}" > /dev/null || :
+fi
+modules=( $(find /lib/modules/%{kversion}.%{_target_cpu}/extra/%{kmod_name} | grep '\.ko$') )
+if [ -x "/usr/sbin/weak-modules" ]; then
+    printf '%s\n' "${modules[@]}" | /usr/sbin/weak-modules --add-modules
+fi
+
+%preun -n kmod-%{kmod_name}
+rpm -ql kmod-%{kmod_name}-%{version}-%{release}.%{_target_cpu} | grep '\.ko$' > /var/run/rpm-kmod-%{kmod_name}-modules
+
+%postun -n kmod-%{kmod_name}
+if [ -e "/boot/System.map-%{kversion}.%{_target_cpu}" ]; then
+    /usr/sbin/depmod -aeF "/boot/System.map-%{kversion}.%{_target_cpu}" "%{kversion}.%{_target_cpu}" > /dev/null || :
+fi
+modules=( $(cat /var/run/rpm-kmod-%{kmod_name}-modules) )
+rm /var/run/rpm-kmod-%{kmod_name}-modules
+if [ -x "/usr/sbin/weak-modules" ]; then
+    printf '%s\n' "${modules[@]}" | /usr/sbin/weak-modules --remove-modules
+fi
+
 %files -n kmod-%{kmod_name}
 /lib/modules/%{kversion}.%{_target_cpu}/extra/*
 %config /etc/depmod.d/kmod-%{kmod_name}.conf
 
 %changelog
+* Sat Mar 09 2024 Simone Caronni <negativo17@gmail.com> - 3:550.54.14-2
+- Enable aarch64.
+
 * Sun Mar 03 2024 Simone Caronni <negativo17@gmail.com> - 3:550.54.14-1
 - Update to 550.54.14.
 
