@@ -5,14 +5,15 @@
 
 Name:           nvidia-kmod
 Version:        550.54.14
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
 URL:            http://www.nvidia.com/object/unix.html
-ExclusiveArch:  x86_64
+ExclusiveArch:  x86_64 aarch64
 
 Source0:        %{name}-%{version}-x86_64.tar.xz
+Source1:        %{name}-%{version}-aarch64.tar.xz
 
 # Get the needed BuildRequires (in parts depending on what we build for):
 BuildRequires:  kmodtool
@@ -29,7 +30,13 @@ The NVidia %{version} display driver kernel module for kernel %{kversion}.
 # Print kmodtool output for debugging purposes:
 kmodtool  --target %{_target_cpu}  --repo negativo17.org --kmodname %{name} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 
-%autosetup -p1 -n %{name}-%{version}-x86_64
+%ifarch x86_64
+%setup -q -n %{name}-%{version}-x86_64
+%endif
+
+%ifarch aarch64
+%setup -q -T -b 1 -n %{name}-%{version}-aarch64
+%endif
 
 rm -f */dkms.conf
 
@@ -61,6 +68,9 @@ done
 %{?akmod_install}
 
 %changelog
+* Sat Mar 09 2024 Simone Caronni <negativo17@gmail.com> - 3:550.54.14-2
+- Enable aarch64.
+
 * Sun Mar 03 2024 Simone Caronni <negativo17@gmail.com> - 3:550.54.14-1
 - Update to 550.54.14.
 
