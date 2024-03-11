@@ -51,7 +51,7 @@ the same variant of the Linux kernel and not on any one specific build.
 %package -n kmod-%{kmod_name}
 Summary:    %{kmod_name} kernel module(s)
 
-Provides:   kabi-modules = %{kversion}.%{_target_cpu}
+Provides:   kabi-modules = %{kversion}
 Provides:   %{kmod_name}-kmod = %{?epoch:%{epoch}:}%{version}-%{release}
 Requires:   module-init-tools
 
@@ -73,7 +73,7 @@ mv kernel/* .
 echo "override %{kmod_name} * weak-updates/%{kmod_name}" > kmod-%{kmod_name}.conf
 
 %build
-export SYSSRC=%{_usrsrc}/kernels/%{kversion}.%{_target_cpu}
+export SYSSRC=%{_usrsrc}/kernels/%{kversion}
 export IGNORE_XEN_PRESENCE=1
 export IGNORE_PREEMPT_RT_PRESENCE=1
 export IGNORE_CC_MISMATCH=1
@@ -84,18 +84,18 @@ export IGNORE_CC_MISMATCH=1
 export INSTALL_MOD_PATH=%{buildroot}
 export INSTALL_MOD_DIR=extra/%{kmod_name}
 
-make -C %{_usrsrc}/kernels/%{kversion}.%{_target_cpu} modules_install M=$PWD
+make -C %{_usrsrc}/kernels/%{kversion} modules_install M=$PWD
 
 install -d %{buildroot}%{_sysconfdir}/depmod.d/
 install kmod-%{kmod_name}.conf %{buildroot}%{_sysconfdir}/depmod.d/
 # Remove the unrequired files.
-rm -f %{buildroot}/lib/modules/%{kversion}.%{_target_cpu}/modules.*
+rm -f %{buildroot}/lib/modules/%{kversion}/modules.*
 
 %post -n kmod-%{kmod_name}
-if [ -e "/boot/System.map-%{kversion}.%{_target_cpu}" ]; then
-    /usr/sbin/depmod -aeF "/boot/System.map-%{kversion}.%{_target_cpu}" "%{kversion}.%{_target_cpu}" > /dev/null || :
+if [ -e "/boot/System.map-%{kversion}" ]; then
+    /usr/sbin/depmod -aeF "/boot/System.map-%{kversion}" "%{kversion}" > /dev/null || :
 fi
-modules=( $(find /lib/modules/%{kversion}.%{_target_cpu}/extra/%{kmod_name} | grep '\.ko$') )
+modules=( $(find /lib/modules/%{kversion}/extra/%{kmod_name} | grep '\.ko$') )
 if [ -x "/usr/sbin/weak-modules" ]; then
     printf '%s\n' "${modules[@]}" | /usr/sbin/weak-modules --add-modules
 fi
@@ -104,8 +104,8 @@ fi
 rpm -ql kmod-%{kmod_name}-%{version}-%{release}.%{_target_cpu} | grep '\.ko$' > /var/run/rpm-kmod-%{kmod_name}-modules
 
 %postun -n kmod-%{kmod_name}
-if [ -e "/boot/System.map-%{kversion}.%{_target_cpu}" ]; then
-    /usr/sbin/depmod -aeF "/boot/System.map-%{kversion}.%{_target_cpu}" "%{kversion}.%{_target_cpu}" > /dev/null || :
+if [ -e "/boot/System.map-%{kversion}" ]; then
+    /usr/sbin/depmod -aeF "/boot/System.map-%{kversion}" "%{kversion}" > /dev/null || :
 fi
 modules=( $(cat /var/run/rpm-kmod-%{kmod_name}-modules) )
 rm /var/run/rpm-kmod-%{kmod_name}-modules
@@ -114,7 +114,7 @@ if [ -x "/usr/sbin/weak-modules" ]; then
 fi
 
 %files -n kmod-%{kmod_name}
-/lib/modules/%{kversion}.%{_target_cpu}/extra/*
+/lib/modules/%{kversion}/extra/*
 %config /etc/depmod.d/kmod-%{kmod_name}.conf
 
 %changelog
