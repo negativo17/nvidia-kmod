@@ -19,8 +19,8 @@
 %{!?kversion: %global kversion %(uname -r)}
 
 Name:           %{kmod_name}-kmod
-Version:        550.54.14
-Release:        2%{?dist}
+Version:        550.67
+Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
@@ -118,6 +118,9 @@ fi
 %config /etc/depmod.d/kmod-%{kmod_name}.conf
 
 %changelog
+* Sun Mar 24 2024 Simone Caronni <negativo17@gmail.com> - 3:550.67-1
+- Update to 550.67.
+
 * Sat Mar 09 2024 Simone Caronni <negativo17@gmail.com> - 3:550.54.14-2
 - Enable aarch64.
 
