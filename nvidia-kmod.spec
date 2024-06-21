@@ -61,11 +61,11 @@ using the %{_target_cpu} family of processors.
 
 %prep
 %ifarch x86_64
-%setup -q -n %{kmod_name}-kmod-%{version}-x86_64
+%autosetup -n %{kmod_name}-kmod-%{version}-x86_64
 %endif
 
 %ifarch aarch64
-%setup -q -T -b 1 -n %{kmod_name}-kmod-%{version}-aarch64
+%autosetup -T -b 1 -n %{kmod_name}-kmod-%{version}-aarch64
 %endif
 
 mv kernel/* .
