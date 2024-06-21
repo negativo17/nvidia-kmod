@@ -31,11 +31,11 @@ The NVidia %{version} display driver kernel module for kernel %{kversion}.
 kmodtool  --target %{_target_cpu}  --repo negativo17.org --kmodname %{name} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 
 %ifarch x86_64
-%setup -q -n %{name}-%{version}-x86_64
+%autosetup -n %{name}-%{version}-x86_64
 %endif
 
 %ifarch aarch64
-%setup -q -T -b 1 -n %{name}-%{version}-aarch64
+%autosetup -T -b 1 -n %{name}-%{version}-aarch64
 %endif
 
 rm -f */dkms.conf
