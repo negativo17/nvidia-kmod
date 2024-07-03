@@ -32,16 +32,11 @@ Source1:        %{kmod_name}-kmod-%{version}-aarch64.tar.xz
 
 BuildRequires:  elfutils-libelf-devel
 BuildRequires:  gcc
+BuildRequires:  kernel-abi-stablelists
 BuildRequires:  kernel-devel
 BuildRequires:  kmod
 BuildRequires:  redhat-rpm-config
-
-%if 0%{?rhel} == 7
-BuildRequires:  kernel-abi-whitelists
-%else
-BuildRequires:  kernel-abi-stablelists
 BuildRequires:  kernel-rpm-macros
-%endif
 
 %description
 This package provides the proprietary NVIDIA OpenGL kernel driver module.
