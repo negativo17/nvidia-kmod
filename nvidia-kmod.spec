@@ -5,7 +5,7 @@
 
 Name:           nvidia-kmod
 Version:        560.35.03
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
@@ -14,6 +14,8 @@ ExclusiveArch:  x86_64 aarch64
 
 Source0:        %{name}-%{version}-x86_64.tar.xz
 Source1:        %{name}-%{version}-aarch64.tar.xz
+# https://github.com/NVIDIA/open-gpu-kernel-modules/pull/692
+Patch0:         kernel-6.11.patch
 
 # Get the needed BuildRequires (in parts depending on what we build for):
 BuildRequires:  kmodtool
@@ -31,11 +33,11 @@ The NVidia %{version} display driver kernel module for kernel %{kversion}.
 kmodtool  --target %{_target_cpu}  --repo negativo17.org --kmodname %{name} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 
 %ifarch x86_64
-%autosetup -n %{name}-%{version}-x86_64
+%autosetup -p1 -n %{name}-%{version}-x86_64
 %endif
 
 %ifarch aarch64
-%autosetup -T -b 1 -n %{name}-%{version}-aarch64
+%autosetup -p1 -T -b 1 -n %{name}-%{version}-aarch64
 %endif
 
 rm -f */dkms.conf
@@ -68,6 +70,9 @@ done
 %{?akmod_install}
 
 %changelog
+* Fri Oct 11 2024 Simone Caronni <negativo17@gmail.com> - 3:560.35.03-2
+- Add kernel 6.11 patch.
+
 * Wed Aug 21 2024 Simone Caronni <negativo17@gmail.com> - 3:560.35.03-1
 - Update to 560.35.03.
 
