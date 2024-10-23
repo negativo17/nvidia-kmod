@@ -4,8 +4,8 @@
 %global debug_package %{nil}
 
 Name:           nvidia-kmod
-Version:        560.35.03
-Release:        2%{?dist}
+Version:        565.57.01
+Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
@@ -14,8 +14,6 @@ ExclusiveArch:  x86_64 aarch64
 
 Source0:        %{name}-%{version}-x86_64.tar.xz
 Source1:        %{name}-%{version}-aarch64.tar.xz
-# https://github.com/NVIDIA/open-gpu-kernel-modules/pull/692
-Patch0:         kernel-6.11.patch
 
 # Get the needed BuildRequires (in parts depending on what we build for):
 BuildRequires:  kmodtool
@@ -70,6 +68,9 @@ done
 %{?akmod_install}
 
 %changelog
+* Wed Oct 23 2024 Simone Caronni <negativo17@gmail.com> - 3:565.57.01-1
+- Update to 565.57.01.
+
 * Fri Oct 11 2024 Simone Caronni <negativo17@gmail.com> - 3:560.35.03-2
 - Add kernel 6.11 patch.
 
