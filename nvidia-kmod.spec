@@ -20,18 +20,18 @@
 
 Name:           %{kmod_name}-kmod
 Version:        565.57.01
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
 URL:            http://www.nvidia.com/
 ExclusiveArch:  x86_64 aarch64
 
-Source0:        %{kmod_name}-kmod-%{version}-x86_64.tar.xz
-Source1:        %{kmod_name}-kmod-%{version}-aarch64.tar.xz
+Source0:        https://github.com/NVIDIA/open-gpu-kernel-modules/archive/%{version}/open-gpu-kernel-modules-%{version}.tar.gz
 
 BuildRequires:  elfutils-libelf-devel
 BuildRequires:  gcc
+BuildRequires:  gcc-c++
 BuildRequires:  kernel-abi-stablelists
 BuildRequires:  kernel-devel
 BuildRequires:  kmod
@@ -55,15 +55,7 @@ This package provides the %{kmod_name} kernel module(s) built for the Linux kern
 using the %{_target_cpu} family of processors.
 
 %prep
-%ifarch x86_64
-%autosetup -n %{kmod_name}-kmod-%{version}-x86_64
-%endif
-
-%ifarch aarch64
-%autosetup -T -b 1 -n %{kmod_name}-kmod-%{version}-aarch64
-%endif
-
-mv kernel/* .
+%autosetup -p1 -n open-gpu-kernel-modules-%{version}
 
 echo "override %{kmod_name} * weak-updates/%{kmod_name}" > kmod-%{kmod_name}.conf
 
@@ -73,13 +65,13 @@ export IGNORE_XEN_PRESENCE=1
 export IGNORE_PREEMPT_RT_PRESENCE=1
 export IGNORE_CC_MISMATCH=1
 
-%make_build module
+%make_build modules
 
 %install
 export INSTALL_MOD_PATH=%{buildroot}
 export INSTALL_MOD_DIR=extra/%{kmod_name}
 
-make -C %{_usrsrc}/kernels/%{kversion} modules_install M=$PWD
+make -C %{_usrsrc}/kernels/%{kversion} modules_install M=$PWD/kernel-open
 
 install -d %{buildroot}%{_sysconfdir}/depmod.d/
 install kmod-%{kmod_name}.conf %{buildroot}%{_sysconfdir}/depmod.d/
@@ -113,6 +105,9 @@ fi
 %config /etc/depmod.d/kmod-%{kmod_name}.conf
 
 %changelog
+* Mon Nov 18 2024 Simone Caronni <negativo17@gmail.com> - 3:565.57.01-2
+- Switch to open modules.
+
 * Sat Oct 26 2024 Simone Caronni <negativo17@gmail.com> - 3:565.57.01-1
 - Update to 565.57.01.
 
