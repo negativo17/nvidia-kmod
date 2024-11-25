@@ -5,7 +5,7 @@
 
 Name:           nvidia-kmod
 Version:        565.57.01
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
@@ -14,6 +14,9 @@ ExclusiveArch:  x86_64 aarch64
 
 Source0:        %{name}-%{version}-x86_64.tar.xz
 Source1:        %{name}-%{version}-aarch64.tar.xz
+
+# https://github.com/Binary-Eater/open-gpu-kernel-modules/commit/8ac26d3c66ea88b0f80504bdd1e907658b41609d
+Patch0:         kernel-6.12.patch
 
 # Get the needed BuildRequires (in parts depending on what we build for):
 BuildRequires:  kmodtool
@@ -68,6 +71,9 @@ done
 %{?akmod_install}
 
 %changelog
+* Mon Nov 25 2024 Simone Caronni <negativo17@gmail.com> - 3:565.57.01-2
+- Add kernel 6.12 patch.
+
 * Wed Oct 23 2024 Simone Caronni <negativo17@gmail.com> - 3:565.57.01-1
 - Update to 565.57.01.
 
