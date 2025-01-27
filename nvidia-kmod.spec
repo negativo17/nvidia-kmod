@@ -4,7 +4,7 @@
 %global debug_package %{nil}
 
 Name:           nvidia-kmod
-Version:        565.77
+Version:        570.86.15
 Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
@@ -68,6 +68,9 @@ done
 %{?akmod_install}
 
 %changelog
+* Mon Jan 27 2025 Simone Caronni <negativo17@gmail.com> - 3:570.86.15-1
+- Update to 570.86.15.
+
 * Thu Dec 05 2024 Simone Caronni <negativo17@gmail.com> - 3:565.77-1
 - Update to 565.77.
 
