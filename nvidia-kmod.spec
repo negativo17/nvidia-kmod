@@ -14,8 +14,6 @@ ExclusiveArch:  x86_64 aarch64
 
 Source0:        %{name}-%{version}-x86_64.tar.xz
 Source1:        %{name}-%{version}-aarch64.tar.xz
-# Kbuild: Convert EXTRA_CFLAGS to ccflags-y (6.15+) + std=gnu17
-Patch0:         nvidia-kernel-ccflags-y.patch
 
 # Get the needed BuildRequires (in parts depending on what we build for):
 BuildRequires:  kmodtool
