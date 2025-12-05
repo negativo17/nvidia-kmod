@@ -3,8 +3,11 @@
 
 %global debug_package %{nil}
 
+# Build flags are inherited from the kernel
+%undefine _auto_set_build_flags
+
 Name:           nvidia-kmod
-Version:        580.105.08
+Version:        590.44.01
 Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
@@ -12,9 +15,13 @@ License:        NVIDIA License
 URL:            http://www.nvidia.com/object/unix.html
 ExclusiveArch:  x86_64 aarch64
 
-Source0:        %{name}-%{version}-x86_64.tar.xz
-Source1:        %{name}-%{version}-aarch64.tar.xz
+Source0:        https://github.com/NVIDIA/open-gpu-kernel-modules/archive/%{version}/open-gpu-kernel-modules-%{version}.tar.gz
 
+# The run file contains precompiled C++ code for the open modules:
+#   kernel-open/nvidia/nv-kernel.o_binary
+#   kernel-open/nvidia-modeset/nv-modeset-kernel.o_binary
+# The full open tarball requires also a c++ compiler to build those bits:
+BuildRequires:  gcc-c++
 # Get the needed BuildRequires (in parts depending on what we build for):
 BuildRequires:  kmodtool
 
@@ -30,44 +37,34 @@ The NVidia %{version} display driver kernel module for kernel %{kversion}.
 # Print kmodtool output for debugging purposes:
 kmodtool  --target %{_target_cpu}  --repo negativo17.org --kmodname %{name} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 
-%ifarch x86_64
-%autosetup -p1 -n %{name}-%{version}-x86_64
-%endif
+%autosetup -p1 -c
 
-%ifarch aarch64
-%autosetup -p1 -T -b 1 -n %{name}-%{version}-aarch64
-%endif
-
-rm -f */dkms.conf
+rm -f open-gpu-kernel-modules-%{version}/dkms.conf
 
 for kernel_version in %{?kernel_versions}; do
-    mkdir _kmod_build_${kernel_version%%___*}
-    cp -fr kernel* _kmod_build_${kernel_version%%___*}
+    cp -fr open-gpu-kernel-modules-%{version} _kmod_build_${kernel_version%%___*}
 done
 
 %build
-if [ -f /etc/nvidia/kernel.conf ]; then
-    . /etc/nvidia/kernel.conf
-fi
 for kernel_version in %{?kernel_versions}; do
     pushd _kmod_build_${kernel_version%%___*}/
-        make %{?_smp_mflags} -C ${MODULE_VARIANT} \
-            KERNEL_UNAME="${kernel_version%%___*}" modules
+        make %{?_smp_mflags} KERNEL_UNAME="${kernel_version%%___*}" modules
     popd
 done
 
 %install
-if [ -f /etc/nvidia/kernel.conf ]; then
-    . /etc/nvidia/kernel.conf
-fi
 for kernel_version in %{?kernel_versions}; do
     mkdir -p %{buildroot}/%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/
-    install -p -m 0755 _kmod_build_${kernel_version%%___*}/${MODULE_VARIANT}/*.ko \
+    install -p -m 0755 _kmod_build_${kernel_version%%___*}/kernel-open/*.ko \
         %{buildroot}/%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/
 done
 %{?akmod_install}
 
 %changelog
+* Fri Dec 05 2025 Simone Caronni <negativo17@gmail.com> - 3:590.44.01-1
+- Update to 590.44.01.
+- Drop proprietary modules support (required only for vGPU).
+
 * Fri Nov 07 2025 Simone Caronni <negativo17@gmail.com> - 3:580.105.08-1
 - Update to 580.105.08.
 
