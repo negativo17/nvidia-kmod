@@ -7,8 +7,8 @@
 %undefine _auto_set_build_flags
 
 Name:           nvidia-kmod
-Version:        590.44.01
-Release:        2%{?dist}
+Version:        590.48.01
+Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
@@ -61,6 +61,9 @@ done
 %{?akmod_install}
 
 %changelog
+* Thu Dec 18 2025 Simone Caronni <negativo17@gmail.com> - 3:590.48.01-1
+- Update to 590.48.01.
+
 * Wed Dec 10 2025 Simone Caronni <negativo17@gmail.com> - 3:590.44.01-2
 - Bump release for broken updates on aarch64.
 
