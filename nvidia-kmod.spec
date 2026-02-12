@@ -8,7 +8,7 @@
 
 Name:           nvidia-kmod
 Version:        590.48.01
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
@@ -21,9 +21,12 @@ Source0:        https://github.com/NVIDIA/open-gpu-kernel-modules/archive/%{vers
 #   kernel-open/nvidia/nv-kernel.o_binary
 #   kernel-open/nvidia-modeset/nv-modeset-kernel.o_binary
 # The full open tarball requires also a c++ compiler to build those bits:
+
+BuildRequires:  elfutils-libelf-devel
 BuildRequires:  gcc-c++
-# Get the needed BuildRequires (in parts depending on what we build for):
 BuildRequires:  kmodtool
+
+%global AkmodsBuildRequires elfutils-libelf-devel, gcc-c++, kmodtool
 
 # kmodtool does its magic here:
 %{expand:%(kmodtool --target %{_target_cpu} --repo negativo17.org --kmodname %{name} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null) }
@@ -61,6 +64,9 @@ done
 %{?akmod_install}
 
 %changelog
+* Thu Feb 12 2026 Simone Caronni <negativo17@gmail.com> - 3:590.48.01-2
+- Adjust BuildRequires for akmod package.
+
 * Thu Dec 18 2025 Simone Caronni <negativo17@gmail.com> - 3:590.48.01-1
 - Update to 590.48.01.
 
