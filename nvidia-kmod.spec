@@ -8,7 +8,7 @@
 
 Name:           nvidia-kmod
 Version:        590.48.01
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
@@ -41,12 +41,13 @@ The NVidia %{version} display driver kernel module for kernel %{kversion}.
 # Print kmodtool output for debugging purposes:
 kmodtool  --target %{_target_cpu}  --repo negativo17.org --kmodname %{name} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 
-%autosetup -p1 -n open-gpu-kernel-modules-%{version}
+%setup -q -c
+%patch 0 -p1 -d open-gpu-kernel-modules-%{version}/
 
 rm -f open-gpu-kernel-modules-%{version}/dkms.conf
 
 for kernel_version in %{?kernel_versions}; do
-    cp -fr *.* Makefile src kernel-open _kmod_build_${kernel_version%%___*}
+    cp -fr open-gpu-kernel-modules-%{version} _kmod_build_${kernel_version%%___*}
 done
 
 %build
@@ -65,6 +66,9 @@ done
 %{?akmod_install}
 
 %changelog
+* Fri Feb 13 2026 Simone Caronni <negativo17@gmail.com> - 3:590.48.01-3
+- Fix error that prevents building the module.
+
 * Thu Feb 12 2026 Simone Caronni <negativo17@gmail.com> - 3:590.48.01-2
 - Adjust BuildRequires for akmod package.
 - Add 6.19 kernel patch.
