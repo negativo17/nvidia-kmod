@@ -7,8 +7,8 @@
 %undefine _auto_set_build_flags
 
 Name:           nvidia-kmod
-Version:        590.48.01
-Release:        3%{?dist}
+Version:        595.45.04
+Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
@@ -16,7 +16,6 @@ URL:            http://www.nvidia.com/object/unix.html
 ExclusiveArch:  x86_64 aarch64
 
 Source0:        https://github.com/NVIDIA/open-gpu-kernel-modules/archive/%{version}/open-gpu-kernel-modules-%{version}.tar.gz
-Patch0:         https://github.com/CachyOS/open-gpu-kernel-modules/commit/c9457ce40a6af2ce74c520564e2d8775f49e3d27.patch
 
 # The run file contains precompiled C++ code for the open modules:
 #   kernel-open/nvidia/nv-kernel.o_binary
@@ -42,7 +41,7 @@ The NVidia %{version} display driver kernel module for kernel %{kversion}.
 kmodtool  --target %{_target_cpu}  --repo negativo17.org --kmodname %{name} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 
 %setup -q -c
-%patch 0 -p1 -d open-gpu-kernel-modules-%{version}/
+#patch 0 -p1 -d open-gpu-kernel-modules-%{version}/
 
 rm -f open-gpu-kernel-modules-%{version}/dkms.conf
 
@@ -66,6 +65,9 @@ done
 %{?akmod_install}
 
 %changelog
+* Thu Mar 05 2026 Simone Caronni <negativo17@gmail.com> - 3:595.45.04-1
+- Update to 595.45.04.
+
 * Fri Feb 13 2026 Simone Caronni <negativo17@gmail.com> - 3:590.48.01-3
 - Fix error that prevents building the module.
 
