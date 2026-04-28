@@ -7,7 +7,7 @@
 %undefine _auto_set_build_flags
 
 Name:           nvidia-kmod
-Version:        595.58.03
+Version:        595.71.05
 Release:        1%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
@@ -64,6 +64,9 @@ done
 %{?akmod_install}
 
 %changelog
+* Tue Apr 28 2026 Simone Caronni <negativo17@gmail.com> - 3:595.71.05-1
+- Update to 595.71.05.
+
 * Tue Mar 24 2026 Simone Caronni <negativo17@gmail.com> - 3:595.58.03-1
 - Update to 595.58.03.
 
