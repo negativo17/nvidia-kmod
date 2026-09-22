@@ -8,7 +8,7 @@
 
 Name:           nvidia-kmod
 Version:        615.71.09
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        NVIDIA display driver kernel module
 Epoch:          3
 License:        NVIDIA License
@@ -16,6 +16,8 @@ URL:            http://www.nvidia.com/object/unix.html
 ExclusiveArch:  x86_64 aarch64
 
 Source0:        https://github.com/NVIDIA/open-gpu-kernel-modules/archive/%{version}/open-gpu-kernel-modules-%{version}.tar.gz
+Patch0:         https://github.com/anatase-org/open-gpu-kernel-modules/commit/ab2ed1443400caa8097da1107ccd0eda8e6a5354.patch
+Patch1:         https://github.com/anatase-org/open-gpu-kernel-modules/commit/2fa83dac159ee4be2f2e08be8f211aadf6a65c5c.patch
 
 # The run file contains precompiled C++ code for the open modules:
 #   kernel-open/nvidia/nv-kernel.o_binary
@@ -40,13 +42,12 @@ The NVidia %{version} display driver kernel module for kernel %{kversion}.
 # Print kmodtool output for debugging purposes:
 kmodtool  --target %{_target_cpu}  --repo negativo17.org --kmodname %{name} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 
-%setup -q -c
-#patch 0 -p1 -d open-gpu-kernel-modules-%{version}/
-
-rm -f open-gpu-kernel-modules-%{version}/dkms.conf
+%autosetup -p1 -n open-gpu-kernel-modules-%{version}
+rm -f dkms.conf
 
 for kernel_version in %{?kernel_versions}; do
-    cp -fr open-gpu-kernel-modules-%{version} _kmod_build_${kernel_version%%___*}
+    mkdir _kmod_build_${kernel_version%%___*}
+    cp -fr $(ls | grep -v '^_kmod_build_') _kmod_build_${kernel_version%%___*}/
 done
 
 %build
@@ -65,6 +66,9 @@ done
 %{?akmod_install}
 
 %changelog
+* Tue Sep 22 2026 Simone Caronni <negativo17@gmail.com> - 3:615.71.09-2
+- Add patches from Anatase (https://anatase.org/).
+
 * Thu Sep 10 2026 Simone Caronni <negativo17@gmail.com> - 3:615.71.09-1
 - Update to 615.71.09.
 
